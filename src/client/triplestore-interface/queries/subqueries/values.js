@@ -1,0 +1,1 @@
+export const values = vals => vals.reduce((t, x) => `${t}(${x.includes('http://') && !x.includes('<') ? `<${x}>` : x })`, ``)

@@ -1,0 +1,256 @@
+{
+	
+	"defaults" : {
+
+	},
+
+
+
+
+	"SECRET_KEY" : "q21Fw6QOVxfpzVcOvT8ntJNvhuvuDlTOC4g1AO1T",
+	
+	"settings" : {
+		"knowledge_graph" : "AGRIF",
+		"shacl_graph" : "ANU Shacl Store (authenticated)",
+		"type_graph" : "ANU Type Store (authenticated)",
+		"additional_shacls" : [],
+		"additional_types" : [],
+		"type_same_as_shacl" : false
+	},
+
+	"type_graphs" : {
+		"Home Type Graph" : {
+			"location" : "http://types",
+			"sparql_endpoint" : "http://localhost:8890",
+			"prefix" : "http://example.org/",
+			"authentication" : {
+				"username" : "",
+				"password" : ""
+			},
+			"endpoint_extension" : "sparql",
+			"request_type" : "POST",
+			"custom_headers" : [],
+			"visible" : ["name"]
+		},
+		"ANU Type Store (authenticated)" : {
+			"location" : "http://types",
+			"sparql_endpoint" : "http://150.203.5.196:8890",
+			"prefix" : "http://example.com/ns#",
+			"authentication" : {
+				"username" : "jesse",
+				"password" : "wright2484"
+			},
+			"endpoint_extension" : "sparql",
+			"request_type" : "POST",
+			"custom_headers" : [],
+			"visible" : true
+		}
+	},
+
+	"shacl_graphs" : {
+		"ANU Shacl Store (authenticated)" : {
+			"location" : "http://shacl/FB15K",
+			"sparql_endpoint" : "http://150.203.5.196:8890",
+			"prefix" : "http://example.org/",
+			"default_namespace" : "ex",
+			"server" : "virtuoso",
+			"authentication" : {
+				"username" : "jesse",
+				"password" : "wright2484"
+			},
+			"endpoint_extension" : "sparql-auth",
+			"request_type" : "POST",
+			"custom_headers" : [],
+			"visible" : []
+		},
+		"ANU Shacl Store (unauthenticated)" : {
+			"location" : "http://shacl/FB15K",
+			"sparql_endpoint" : "http://150.203.5.196:8890",
+			"prefix" : "http://example.org",
+			"authentication" : {
+				"username" : "",
+				"password" : ""
+			},
+			"endpoint_extension" : "sparql",
+			"request_type" : "GET",
+			"custom_headers" : [],
+			"visible" : true
+		},
+		"Home Shacl Store" : {
+			"location" : "http://shacl",
+			"sparql_endpoint" : "http://192.168.20.5:8890",
+			"prefix" : "http://example.org/",
+			"authentication" : {
+				"username" : "dba",
+				"password" : "dba"
+			},
+			"endpoint_extension" : "sparql",
+			"request_type" : "POST",
+			"custom_headers" : [],
+			"visible" : true
+		},
+		"Home Shacl Store2" : {
+			"location" : "http://shacl",
+			"sparql_endpoint" : "http://localhost:8890",
+			"prefix" : "http://example.org/",
+			"authentication" : {
+				"username" : "",
+				"password" : ""
+			},
+			"endpoint_extension" : "sparql",
+			"request_type" : "POST",
+			"custom_headers" : [],
+			"visible" : ["name"]
+		},
+		"Home Shacl Store3" : {
+			"location" : "http://localhost:8890/shacl/",
+			"sparql_endpoint" : "http://localhost:8890",
+			"prefix" : "http://example.org/",
+			"authentication" : {
+				"username" : "dba",
+				"password" : "dba"
+			},
+			"endpoint_extension" : "sparql-auth",
+			"request_type" : "POST",
+			"custom_headers" : [],
+			"visible" : ["name"]
+		},
+		"Home Shacl Store2 (copy)" : {
+			"location" : "http://shacl",
+			"sparql_endpoint" : "http://localhost:8890",
+			"prefix" : "http://example.org/",
+			"authentication" : {
+				"username" : "",
+				"password" : ""
+			},
+			"endpoint_extension" : "sparql",
+			"request_type" : "POST",
+			"custom_headers" : [],
+			"visible" : ["name"]
+		},
+		"Local shacl" : {"local_location" : "C:\\rdf_graphs\\shacl.rdf"},
+		"DBpedia" : {
+			"location" : "http://dbpedia.org",
+			"sparql_endpoint" : "http://dbpedia.org",
+			"prefix" : "http://dbpedia.org/",
+			"authentication" : {
+				"username" : "",
+				"password" : ""
+			},
+			"endpoint_extension" : "sparql",
+			"request_type" : "POST",
+			"custom_headers" : [],
+			"visible" : true}
+	},
+	
+	"knowledge_graphs" : {
+		"ANU FB15K Dataset (testing)" : {
+			"location" : "http://FB15Ktrain",
+			"sparql_endpoint" : "http://jesse:wright2484@150.203.5.196:8890",
+			"prefix" : "http://example.org/",
+			"authentication" : {
+				"username" : "jesse",
+				"password" : "wright2484"
+			},
+			"endpoint_extension" : "sparql-auth",
+			"request_type" : "POST",
+			"custom_headers" : [],
+			"visible" : true},
+		"DBpedia" : {
+			"location" : "http://dbpedia.org",
+			"sparql_endpoint" : "http://dbpedia.org",
+			"prefix" : "http://dbpedia.org",
+			"authentication" : {
+				"username" : "",
+				"password" : ""
+			},
+			"endpoint_extension" : "sparql",
+			"request_type" : "POST",
+			"custom_headers" : [],
+			"visible" : true},
+		"Home FB15K Store" : {
+			"location" : "http://FB15K",
+			"sparql_endpoint" : "http://192.168.20.5:8890",
+			"prefix" : "http://example.org/",
+			"authentication" : {
+				"username" : "dba",
+				"password" : "dba"
+			},
+			"endpoint_extension" : "sparql-auth",
+			"request_type" : "POST",
+			"custom_headers" : [],
+			"visible" : true
+		},
+		"Home FB15K Store2" : {
+			"location" : "http://FB15Ktrain",
+			"sparql_endpoint" : "http://localhost:8890",
+			"prefix" : "http://example.org/",
+			"authentication" : {
+				"username" : "",
+				"password" : ""
+			},
+			"endpoint_extension" : "sparql",
+			"request_type" : "POST",
+			"custom_headers" : [],
+			"visible" : ["name"]
+		},
+		"Local FB15K" : { "local_location" : "C:\\rdf_graphs\\train.rdf"},
+		"AGRIF" : {
+			"location" : "http://rsmdb01.nci.org.au/agrif/environment/assessment/v0",
+			"sparql_endpoint" : "http://rsmdb01.nci.org.au:8890",
+			"prefix" : "http://linked.data.gov.au/dataset/environment/assessment#",
+			"server" : "virtuoso",
+			"default_namespace" : "doee_asm0",
+			"authentication" : {
+				"username" : "jesse",
+				"password" : "jesse"
+			},
+			"endpoint_extension" : "sparql-auth",
+			"request_type" : "POST",
+			"custom_headers" : [],
+			"visible" : true
+		}
+	},
+
+	"schema_prefixes" : {
+		"sh" : "http://www.w3.org/ns/shacl#",
+		"xsd" : "http://www.w3.org/2001/XMLSchema#",
+		"rdf" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+		"rdfs" : "http://www.w3.org/2000/01/rdf-schema#",
+		"agrif" : "http://linked.data.gov.au/def/agrif#",
+		"doee_asm0" : "http://linked.data.gov.au/dataset/environment/assessment/v0#",
+		"ex" : "http://example.org/",
+		"doee_asm" : "http://linked.data.gov.au/dataset/environment/assessment#"
+	},
+
+	"extra_conversions" : { 
+		"a" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+	},
+
+	"default_severities" : ["Warning", "Violation", "undefined"],
+
+	"timeout" : 300000,
+
+	"add_graph_prefixes" : true,
+	"hide_graph_prefixes" : true,
+
+	"language" : "en-us",
+
+	"advanced_features" : {
+		"manual_sparql_queries" : false,
+		"manually_select_undefined_severities" : false,
+		"display_path_instead_of_name" : false,
+		"display_description" : true,
+		"use_type_constraints" : true,
+		"always_apply_range_constraints" : true,
+		"use_object_types_if_no_type_specified" : true,
+		"always_use_object_types" : false
+	},
+
+
+	"SC_warning" : 0.6,
+	"HC_warning" : 0.01,
+	"SC_info" : 0.3,
+	"HC_info" : 0.01,
+	"KG_idx" : 19
+}
