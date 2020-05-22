@@ -4,9 +4,6 @@
 
 	},
 
-
-
-
 	"SECRET_KEY" : "q21Fw6QOVxfpzVcOvT8ntJNvhuvuDlTOC4g1AO1T",
 	
 	"settings" : {
@@ -19,26 +16,13 @@
 	},
 
 	"type_graphs" : {
-		"Home Type Graph" : {
-			"location" : "http://types",
-			"sparql_endpoint" : "http://localhost:8890",
-			"prefix" : "http://example.org/",
-			"authentication" : {
-				"username" : "",
-				"password" : ""
-			},
-			"endpoint_extension" : "sparql",
-			"request_type" : "POST",
-			"custom_headers" : [],
-			"visible" : ["name"]
-		},
 		"ANU Type Store (authenticated)" : {
-			"location" : "http://types",
+			"location" : "http://www.shacl.kg/types",
 			"sparql_endpoint" : "http://150.203.5.196:8890",
 			"prefix" : "http://example.com/ns#",
 			"authentication" : {
-				"username" : "jesse",
-				"password" : "wright2484"
+				"username" : "<USR>",
+				"password" : "<PWD>"
 			},
 			"endpoint_extension" : "sparql",
 			"request_type" : "POST",
@@ -55,102 +39,25 @@
 			"default_namespace" : "ex",
 			"server" : "virtuoso",
 			"authentication" : {
-				"username" : "jesse",
-				"password" : "wright2484"
+				"username" : "<USR>",
+				"password" : "<PWD>"
 			},
 			"endpoint_extension" : "sparql-auth",
 			"request_type" : "POST",
 			"custom_headers" : [],
 			"visible" : []
 		},
-		"ANU Shacl Store (unauthenticated)" : {
-			"location" : "http://shacl/FB15K",
-			"sparql_endpoint" : "http://150.203.5.196:8890",
-			"prefix" : "http://example.org",
-			"authentication" : {
-				"username" : "",
-				"password" : ""
-			},
-			"endpoint_extension" : "sparql",
-			"request_type" : "GET",
-			"custom_headers" : [],
-			"visible" : true
-		},
-		"Home Shacl Store" : {
-			"location" : "http://shacl",
-			"sparql_endpoint" : "http://192.168.20.5:8890",
-			"prefix" : "http://example.org/",
-			"authentication" : {
-				"username" : "dba",
-				"password" : "dba"
-			},
-			"endpoint_extension" : "sparql",
-			"request_type" : "POST",
-			"custom_headers" : [],
-			"visible" : true
-		},
-		"Home Shacl Store2" : {
-			"location" : "http://shacl",
-			"sparql_endpoint" : "http://localhost:8890",
-			"prefix" : "http://example.org/",
-			"authentication" : {
-				"username" : "",
-				"password" : ""
-			},
-			"endpoint_extension" : "sparql",
-			"request_type" : "POST",
-			"custom_headers" : [],
-			"visible" : ["name"]
-		},
-		"Home Shacl Store3" : {
-			"location" : "http://localhost:8890/shacl/",
-			"sparql_endpoint" : "http://localhost:8890",
-			"prefix" : "http://example.org/",
-			"authentication" : {
-				"username" : "dba",
-				"password" : "dba"
-			},
-			"endpoint_extension" : "sparql-auth",
-			"request_type" : "POST",
-			"custom_headers" : [],
-			"visible" : ["name"]
-		},
-		"Home Shacl Store2 (copy)" : {
-			"location" : "http://shacl",
-			"sparql_endpoint" : "http://localhost:8890",
-			"prefix" : "http://example.org/",
-			"authentication" : {
-				"username" : "",
-				"password" : ""
-			},
-			"endpoint_extension" : "sparql",
-			"request_type" : "POST",
-			"custom_headers" : [],
-			"visible" : ["name"]
-		},
-		"Local shacl" : {"local_location" : "C:\\rdf_graphs\\shacl.rdf"},
-		"DBpedia" : {
-			"location" : "http://dbpedia.org",
-			"sparql_endpoint" : "http://dbpedia.org",
-			"prefix" : "http://dbpedia.org/",
-			"authentication" : {
-				"username" : "",
-				"password" : ""
-			},
-			"endpoint_extension" : "sparql",
-			"request_type" : "POST",
-			"custom_headers" : [],
-			"visible" : true}
+
 	},
 	
 	"knowledge_graphs" : {
 		"ANU FB15K Dataset (testing)" : {
 			"location" : "http://FB15Ktrain",
-			"sparql_endpoint" : "http://jesse:wright2484@150.203.5.196:8890",
+			"sparql_endpoint" : "http://150.203.5.196:8890",
 			"prefix" : "http://example.org/",
 			"authentication" : {
-				"username" : "jesse",
-				"password" : "wright2484"
+				"username" : "<USR>",
+				"password" : "<PWD>"
 			},
 			"endpoint_extension" : "sparql-auth",
 			"request_type" : "POST",
@@ -173,37 +80,8 @@
 			"sparql_endpoint" : "http://192.168.20.5:8890",
 			"prefix" : "http://example.org/",
 			"authentication" : {
-				"username" : "dba",
-				"password" : "dba"
-			},
-			"endpoint_extension" : "sparql-auth",
-			"request_type" : "POST",
-			"custom_headers" : [],
-			"visible" : true
-		},
-		"Home FB15K Store2" : {
-			"location" : "http://FB15Ktrain",
-			"sparql_endpoint" : "http://localhost:8890",
-			"prefix" : "http://example.org/",
-			"authentication" : {
-				"username" : "",
-				"password" : ""
-			},
-			"endpoint_extension" : "sparql",
-			"request_type" : "POST",
-			"custom_headers" : [],
-			"visible" : ["name"]
-		},
-		"Local FB15K" : { "local_location" : "C:\\rdf_graphs\\train.rdf"},
-		"AGRIF" : {
-			"location" : "http://rsmdb01.nci.org.au/agrif/environment/assessment/v0",
-			"sparql_endpoint" : "http://rsmdb01.nci.org.au:8890",
-			"prefix" : "http://linked.data.gov.au/dataset/environment/assessment#",
-			"server" : "virtuoso",
-			"default_namespace" : "doee_asm0",
-			"authentication" : {
-				"username" : "jesse",
-				"password" : "jesse"
+				"username" : "<USR>",
+				"password" : "<PWD>"
 			},
 			"endpoint_extension" : "sparql-auth",
 			"request_type" : "POST",
