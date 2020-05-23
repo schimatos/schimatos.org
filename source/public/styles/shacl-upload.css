@@ -1,0 +1,14 @@
+body {
+	margin: 10px;
+}
+
+textarea.shaclInput {
+	width: 100%;
+	height: 72vh;
+	resize: none;
+}
+
+div.success_message {
+	width: 100%;
+	background-color: #53c353;
+}
