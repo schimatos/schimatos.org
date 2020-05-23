@@ -13,3 +13,6 @@ These graphs may either be handcrafted within the tool (using a form building GU
 
 During data-entry, the tool uses entity relationships and attribute requirements to generate a Web-form for end-users.  Attribute constraints are then used to perform client-side validation.  Thus, this tool enables end-users to create and edit complex data graphs abstracted in an easy-to-use GUI. 
  Additionally, validation procedures reduce the introduction of erroneous data.
+
+## License
+Content submitted to [schimatos.org](http://schimatos.org/) is MIT licensed, as found in the [LICENSE.md](https://github.com/schimatos/schimatos.org/blob/master/LICENSE) file.
