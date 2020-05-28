@@ -14,7 +14,7 @@ import updatePathState from './update-path-state'
 import predicateOptionsAdd from './predicate-options-add'
 
 export default (state, action) => {
-    //console.log('targets reducer', state, action)
+    ////console.log('targets reducer', state, action)
     const {type, i, value, category, response, requested, loading, no, prefix, hide, ids} = action
     switch (type) {
         case 'ADD_OPTION':

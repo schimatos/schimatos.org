@@ -40,8 +40,8 @@ export default async () => {
                     ['kgraph', '<'+endpoint(kgraph, false)+'>'],
                     ['fsgraph', 'SERVICE <'+endpoint(sgraph, true)],
                     ['fkgraph', 'SERVICE <'+endpoint(kgraph, true)+'>'],
-                    ['snamed', sgraph.location.includes('http://') ? '<' + sgraph.location + '>' : sgraph.location],
-                    ['knamed', kgraph.location.includes('http://') ? '<' + kgraph.location + '>' : kgraph.location]]
+                    ['snamed', '<' + sgraph.location + '>'],
+                    ['knamed', '<' + kgraph.location + '>']]
 
 
 
@@ -63,7 +63,7 @@ export default async () => {
             const full_query = sparql_prefixes + replacePseudo(graphIRIs, query)
 
             const sendQuery = async (graph, query) => {
-                    console.log('query sent', query)
+                    //console.log('query sent', query)
                     try {
                         const auth = {"Authorization" : "Basic " + new Buffer(`${graph['authentication']['username']}:${graph['authentication']['password']}`).toString("base64")}
                         const isauth = graph['authentication']['username'] + graph['authentication']['password'] !== ''
@@ -77,7 +77,7 @@ export default async () => {
                             method : graph.request_type
                         })
                         if (response.statusCode !== 200) {
-                            console.log(await response)
+                            //console.log(await response)
                             return await preProcess ? preProcessor([]) : []
                         } else {
                             const parsed = await JSON.parse(await response.body).results.bindings
@@ -104,18 +104,18 @@ export default async () => {
 
                         }
                     } catch (e) {
-                        console.log(e)
+                        //console.log(e)
                         return preProcess ? preProcessor([]) : []
                     }
                 }
 
             if (start_graph !== 'sgraph' && start_graph !== 'kgraph') {
-                console.log('start', s)
+                //console.log('start', s)
                 const s = shacl_graphs[start_graph]
                 const specIRIs = [['Asprefix', s.prefix],['Asnamed', '<'+s.location+ '>'], ['Asgraph', '<'+endpoint(s, false)+ '>'], ['Afsgraph', '<'+endpoint(s, true)+'>']]
                 const q = replacePseudo(specIRIs, full_query)
                 const res = await sendQuery(s, q)
-                console.log('res', await res)
+                //console.log('res', await res)
                 return await res
             } else if (full_query.includes('{Asnamed}') || full_query.includes('{Afsgraph}') || full_query.includes('{Asgraph}')) {
                 return [shacl_graph, ...additional_shacls].map(async x => {
@@ -123,14 +123,14 @@ export default async () => {
                     const specIRIs = [['Asprefix', s.prefix],['Asnamed', '<'+s.location+ '>'], ['Asgraph', '<'+endpoint(s, false)+ '>'], ['Afsgraph', '<'+endpoint(s, true)+'>']]
                     const q = replacePseudo(specIRIs, full_query)
                     const res = graph_details ? [x, await sendQuery(start_graph === 'kgraph' ? kgraph : s, q)] : sendQuery(start_graph === 'kgraph' ? kgraph : s, q)
-                    console.log('res', res)
+                    //console.log('res', res)
                     return res
                 })
             } else {
                 const specIRIs = [['Asprefix', sgraph.prefix],['Asnamed', sgraph.location.includes('http://') ? '<' + sgraph.location + '>' : sgraph.location], ['Asgraph', '<' +endpoint(sgraph, false)+'>'], ['Afsgraph', '<' +endpoint(sgraph, true)]+'>']
                 const q = replacePseudo(specIRIs, full_query)
                 const res = await sendQuery(start_graph === 'kgraph' ? kgraph : sgraph, q)
-                console.log('res', res)
+                //console.log('res', res)
                 return await res
             }
         }

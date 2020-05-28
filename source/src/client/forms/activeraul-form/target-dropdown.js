@@ -5,19 +5,19 @@ import DynamicButton from '../fields/dynamic-button'
 
 const TargetDropdown = props => {
     const parentNo = props.state.targets[props.id].parent
-    //console.log(props.state.targets[props.id])
-    //console.log(parentNo)
+    ////console.log(props.state.targets[props.id])
+    ////console.log(parentNo)
     const parent = parentNo > -1 ? props.state.properties[parentNo] : undefined
-    //console.log(parent)
+    ////console.log(parent)
 
     const property = parent ? props.state.propertyList[parent.property] : {minCount : 1, severity : 'Violation'}
     const minCount = property.minCount ? property.minCount : 1
-    //console.log('minCount', minCount)
+    ////console.log('minCount', minCount)
     const childrenNo = parentNo != '-1' ? parent.children.length : 1
     const atMin = childrenNo <= minCount
-    //console.log('atMin', atMin)
+    ////console.log('atMin', atMin)
     const violation = [undefined, 'Violation'].includes(property.severity)
-    //console.log('vioaltion', violation, property.severity)
+    ////console.log('vioaltion', violation, property.severity)
     
     const remove = () => props.hooks.removeTarget(props.id, parentNo)
 

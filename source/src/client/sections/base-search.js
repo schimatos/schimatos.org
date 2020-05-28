@@ -26,12 +26,12 @@ export default ({ content, initialState, reducer, selectVariable, standardQuerie
             return query.length >= qlength && query.substring(0, qlength) === enforcedQuery;
         };
         const changeOptions = clear => {
-            console.log('change options', response)
+            //console.log('change options', response)
             if (loading && prevSearch === r.search && prevSearchBy === r.searchBy) {
                 const oldOptions = clear ? [] : options;
-                console.log('old options', oldOptions)
+                //console.log('old options', oldOptions)
                 const options = responseConversion ? (convertionType === 'reduce' ? (response.reduce((t, opt) => [...t, ...responseConversion(opt)], oldOptions)) : ([...oldOptions, ...response.map(responseConversion)])) : oldOptions;
-                console.log('options', options)
+                //console.log('options', options)
                 return { ...state, loading: false, options };
             }
             else {
@@ -104,10 +104,10 @@ export default ({ content, initialState, reducer, selectVariable, standardQuerie
         return (
         <Segment basic style={{margin : '0px', padding : '0px'}} disabled={disabled}>
         <Form>
-            <Input type='text' placeholder='Search...' action fluid disabled={disabled}>
+            <Input type='text' key='base' placeholder='Search...' action fluid disabled={disabled}>
                 {searchBy !== 'Custom' && searchBy !== 'All' && input(searchBy)}
-                <Select disabled={disabled} onKeyPress={keyPress} value={searchBy} compact={searchBy !== 'Custom' && searchBy !== 'All'} fluid={searchBy == 'Custom' || searchBy == 'All'} onChange={eValDispatch('CATEGORY_CHANGE')} options={optionsFromArray(o)} />
-                <Button disabled={disabled} onKeyPress={keyPress} onClick={() => makeSearch()} compact align={'right'}><Icon name='search' /></Button>
+                <Select key='sel' disabled={disabled} onKeyPress={keyPress} value={searchBy} compact={searchBy !== 'Custom' && searchBy !== 'All'} fluid={searchBy == 'Custom' || searchBy == 'All'} onChange={eValDispatch('CATEGORY_CHANGE')} options={optionsFromArray(o)} />
+                <Button key='but' disabled={disabled} onKeyPress={keyPress} onClick={() => makeSearch()} compact align={'right'}><Icon key='ic' name='search' /></Button>
             </Input>
             {searchBy === 'Custom' && <TextArea rows={queryText.split(/\r\n|\r|\n/).length} value={queryText} onChange={eValDispatch('QUERY_CHANGE')} />}
             <Divider />

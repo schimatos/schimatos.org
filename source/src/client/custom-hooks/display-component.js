@@ -8,7 +8,7 @@ import {dictMap, nextKey, zipArrays} from '../utils'
 import _ from 'underscore'
 
 export const displayComponent = () => {
-    //console.log('display component')
+    ////console.log('display component')
     const {displayIRI} = conversions(0)
     const [state,] = useContext(ActiveraulContext)
     return displayComponentFunctions({state, displayIRI})
@@ -18,7 +18,7 @@ export const displayComponentFunctions = ({state, displayIRI}) => {
     const {properties, targets, propertyList} = state
 
     const pathString = id => {
-        //console.log(properties, id)
+        ////console.log(properties, id)
         const path = propertyList[properties[id].property].path
         return Array.isArray(path) ? path.slice(1).reduce((t, x) => t+'|'+displayIRI(x), displayIRI(path[0])) : displayIRI(path)
     }
@@ -46,7 +46,7 @@ export const displayComponentFunctions = ({state, displayIRI}) => {
 
     const copyChildren = (t, id) => {
         const minkey = nextKey(state[t === 'targets' ? 'properties' : 'targets'])
-        //console.log('minkey', minkey)
+        ////console.log('minkey', minkey)
         return typeSpecificChildren(t, id, x => [_.range(minkey, minkey + x.length), zipArrays(x, _.range(minkey, minkey + x.length))],dictCopyChildren(minkey))
         
     }
@@ -55,7 +55,7 @@ export const displayComponentFunctions = ({state, displayIRI}) => {
         return x => {
             const  [newChilds, mapping] = Object.entries(x).reduce(([t, mapping, min], [v, childs]) => {
                 const next = min + childs.length
-                //console.log(min, next)
+                ////console.log(min, next)
                 const newChilds = _.range(min, next)
                 const newMapping = zipArrays(childs, newChilds)
                 return [[...t, [v, _.range(min, next)]], [...mapping, ...newMapping], next]

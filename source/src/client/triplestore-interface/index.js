@@ -22,8 +22,8 @@ export default () => {
         const {errorFunc, responseFunc, initFunc, query, targets} = props
         const updatedProps = {...props, triplestore, makeQueryTerm, makeIRI}
         initFunc && initFunc()
-        console.log('query call', props)
-        console.log('triplestore', triplestore)
+        //console.log('query call', props)
+        //console.log('triplestore', triplestore)
         try {
             const response = {
                 'SHACL_PROPERTIES' : shaclProperties,
@@ -40,9 +40,9 @@ export default () => {
                 'TARGET_DETAILS' : targetDetails
             }[query](updatedProps)
 
-            console.log('response', await response)
+            //console.log('response', await response)
             const res = await Array.isArray(await response) ? Promise.all(await response) : await response
-            console.log('res', res)
+            //console.log('res', res)
             const aggregated = ({
                 'ALL_PROPERTIES' : async r => {
                     return (await r).reduce((total, x) => {
@@ -54,10 +54,10 @@ export default () => {
             })[query]
 
             const processed = await aggregated ? aggregated(await res) : res
-            console.log('processed at index', await processed && processed[''] && processed[''].constraints && processed[''].constraints[0])
+            //console.log('processed at index', await processed && processed[''] && processed[''].constraints && processed[''].constraints[0])
             responseFunc(await processed)
         } catch (e) {
-            console.log(e)
+            //console.log(e)
             errorFunc && errorFunc(e)
         }
     }

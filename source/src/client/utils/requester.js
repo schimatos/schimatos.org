@@ -9,7 +9,7 @@ export const requester = data => {
     axios.post(`http://localhost:5000/api/${extension}`, {...body})
         .then(
             response => {
-                console.log('response', response)
+                //console.log('response', response)
                 if (response.statusText !== 'OK') {
                     errorFunc && errorFunc()
                     throw Error(response.statusText)

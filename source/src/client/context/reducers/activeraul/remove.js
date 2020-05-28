@@ -30,7 +30,7 @@ export default (state, {t, id}) => {
         const nstate = {...removal(state, type, id), focus : reduceCheck(state, type, id) ? {type : t, id : p, hold : false} : state.focus}
        //const newState = {...nstate, focus : {type : t, id : p, hold : false}}
 
-        //console.log('state after removal', nstate, t, p, nstate.focus.id, nstate.focus.type)
+        ////console.log('state after removal', nstate, t, p, nstate.focus.id, nstate.focus.type)
 
         return nstate
     } else {

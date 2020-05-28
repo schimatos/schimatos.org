@@ -25,7 +25,7 @@ const ShaclUpload = () => {
                 files.length > 0 ? addFiles(files, evt.target.result + text) : setState(evt.target.result + text)
             } 
             reader.onerror = function (evt) {
-                console.log('error reading file')
+                //console.log('error reading file')
             }}
     }
 

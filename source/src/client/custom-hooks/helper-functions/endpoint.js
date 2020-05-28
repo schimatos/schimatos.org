@@ -9,12 +9,12 @@ import Activeraul from '../../custom-hooks/activeraul-history'
 import contexts from '../activeraul-targets-history'
 
 export default () => {
-	//console.log('at endpoint')
+	////console.log('at endpoint')
 	const {activeraulDispatch, historyDispatch, targetsDispatch} = contexts()
 	const triplestore = triplestoreInterface()
 
 	return ({query, init, response, error, edit, other, context}) => {
-		//console.log('endpoint', query, init, response, error, edit, other, context)
+		////console.log('endpoint', query, init, response, error, edit, other, context)
 		const triples = ({subject, path, targets, pathType, extraTriples, additionalTriples}) => {
 			return [...(pathType === 'inversePath' ? toEntries(targets).map(t => [`<${t}>`, `<${path}>`, `<${subject}>`]) : toEntries(targets).map(t => [`<${subject}>`, `<${path}>`, `<${t}>`])), ...(extraTriples || additionalTriples || [])]
 		}

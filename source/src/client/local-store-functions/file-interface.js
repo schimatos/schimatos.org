@@ -6,7 +6,7 @@
 // const N3 = require('n3')
 
 // const efunc = f => (e, input) => {
-//     e && console.log(e)
+//     e && //console.log(e)
 //     return f(input)
 // }
 

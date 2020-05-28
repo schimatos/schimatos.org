@@ -14,14 +14,14 @@ import lodash from 'lodash'
 import Activeraul from '../custom-hooks/activeraul-history'
 
 export default ({opts}) => {
-    console.log('at navigate form')
+
     const [state,] = Activeraul()
     const {type, id} = state.focus
     const [{settings, knowledge_graphs},] = useContext(TriplestoreContext)
 
     const [,dispatchLayout] = useContext(LayoutContext)
 
-    console.log(displayComponent)
+    //console.log(displayComponent)
 
     const {componentString, allChildren} = displayComponent()
 

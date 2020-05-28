@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Icon } from 'semantic-ui-react'
 
 export default ({filename, text, state}) => {
-    //console.log('filename', filename, 'text', text, 'state', state)
+    ////console.log('filename', filename, 'text', text, 'state', state)
     //return <div>hi</div>
     return (<Button
         as={'a'}

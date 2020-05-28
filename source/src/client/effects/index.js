@@ -15,7 +15,7 @@ import stateEffects from './state-effects'
 import apply from './helper-functions/apply-multiple'
 
 export const onFormLoad = () => {
-    console.log('at on form load', useContext(ActiveraulContext))
+    //console.log('at on form load', useContext(ActiveraulContext))
     apply({effects : [activeraulEffects, targetsEffects, typeEffects, validatorEffects, stateEffects],
         contexts : [useContext(ActiveraulContext), useContext(TargetsContext), useContext(TriplestoreContext)],
         hooks : [['useActiveraulHistory', useActiveraulHistory]],

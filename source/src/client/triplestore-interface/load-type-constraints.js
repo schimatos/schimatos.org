@@ -7,7 +7,7 @@ export const loadTypeConstraints = async ({types, triplestore}) => {
     const typeQuery = getTypes({types})
 
     const postFilter = x => {
-        console.log('at post filter', x)
+        //console.log('at post filter', x)
         const constraints = JSON.parse(x[0].r.value)
 
         return dictValuesMap(constraints, v => dictValuesMap(v, x => x.length === 1 ? x[0] : x))
@@ -15,6 +15,6 @@ export const loadTypeConstraints = async ({types, triplestore}) => {
 
     const typeDetails = await requester(typeQuery, 'tgraph', triplestore, postFilter, {}, false)
 
-    console.log('type details', await typeDetails)
+    //console.log('type details', await typeDetails)
     return await typeDetails
 }

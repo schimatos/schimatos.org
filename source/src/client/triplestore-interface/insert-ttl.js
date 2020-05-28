@@ -12,14 +12,16 @@ export const insertTtl = async ({graph, triplestore, ttl}) => {
     const writer = new N3.Writer()
     const parser = new N3.Parser()
 
-    return await new Promise((response, reject) => {
-        parser.parse(ttl_prefixes+ttl, (err, quad, prefixes) => {
-            if (quad) {
-                writer.addQuad(quad) 
-            } else {
-                writer.end(async (err, res) => {
-                    response(await requester(`INSERT IN GRAPH {${graph + 'named'}} {${res}}`, graph + 'graph', triplestore, async x => await x[0], true))
-                })
-            }})
-    })
+    return await requester(`INSERT IN GRAPH {${graph + 'named'}} {${ttl}}`, graph + 'graph', triplestore, async x => await x[0], true)
+   
+    // ew Promise((response, reject) => {
+    //     parser.parse(ttl_prefixes+ttl, (err, quad, prefixes) => {
+    //         if (quad) {
+    //             writer.addQuad(quad) 
+    //         } else {
+    //             writer.end(async (err, res) => {
+    //                 response(await requester(`INSERT IN GRAPH {${graph + 'named'}} {${res}}`, graph + 'graph', triplestore, async x => await x[0], true))
+    //             })
+    //         }})
+    // })
 }

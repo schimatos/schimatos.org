@@ -10,7 +10,7 @@ import ShaclUpload from './shacl-upload'
 import Activeraul from '../custom-hooks/activeraul-history'
 
 export default ({outside, windowDimensions}) => {
-    console.log('at left sidebar')
+    //console.log('at left sidebar')
     const [{selectionsSidebar},] = useContext(LayoutContext)
     const [panel, setPanel] = useState('SHACL Selections')
 

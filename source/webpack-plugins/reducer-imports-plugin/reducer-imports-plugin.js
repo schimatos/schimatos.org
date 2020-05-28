@@ -32,10 +32,10 @@ class ReducerImportsPlugin {
 }
 // compiler.hooks.normalModuleFactory.tap("entry-option", (params, callback) => {
 //     params.hooks.module.tap('x', (m, data) => {
-//         console.log(m)
+//         //console.log(m)
 //     })
-//     console.log(params.hooks)
-//     console.log(params.hooks.createModule)
+//     //console.log(params.hooks)
+//     //console.log(params.hooks.createModule)
 // })
 
 // ns = readType('.json').reduce((ns, file) => {
@@ -66,7 +66,7 @@ const {createPlugin} = require('docz-core')
 
 // const ReducerImportsPlugin = () => createPlugin({
 //     modifyFiles : (files, args) => {
-//         console.log(files)
+//         //console.log(files)
 //         return files
 //     }
 // })
@@ -87,7 +87,7 @@ const {createPlugin} = require('docz-core')
 
         // createPlugin({
         //     modifyFiles : (files, args) => {
-        //         console.log(files)
+        //         //console.log(files)
         //         return files
         //     }
         // })
@@ -116,7 +116,7 @@ const {createPlugin} = require('docz-core')
 //                     }
 //                     // } else if (name.includes('\\context\\contexts\\')) {
 //                     //     const fname = name.split('\\context\\contexts\\')
-//                     //     console.log(m)
+//                     //     //console.log(m)
 //                     //     return [r, {...c, [fname] : [fname]}]
 //                     // }
 //                     return r
@@ -144,8 +144,8 @@ const {createPlugin} = require('docz-core')
 //                     return total
 //                     }, [])
 
-//                 console.log('newFiles', newFiles)
-//                 console.log(compilation.hooks)
+//                 //console.log('newFiles', newFiles)
+//                 //console.log(compilation.hooks)
 //                 // newFiles.forEach(([contents, name]) => {
 //                 //     compiler.plugin("entry-option", (context, entry) => {
 //                 //         const itemToPlugin = (item, name) => {
@@ -190,7 +190,7 @@ const {createPlugin} = require('docz-core')
 
 //                 // )
 
-//                 // console.log(reducers)
+//                 // //console.log(reducers)
 
 
 
@@ -198,23 +198,23 @@ const {createPlugin} = require('docz-core')
 
 //             })
 //         })
-//             //     //console.log(params))
+//             //     ////console.log(params))
 //         // compiler.hooks.beforeCompile.tapAsync('ReducerImportsPlugin', (params, callback) => {
-//         //     //console.log(params)
-//         //     Object.entries(params).forEach(console.log)
-//         //     console.log(params.normalModuleFactory)
+//         //     ////console.log(params)
+//         //     Object.entries(params).forEach(//console.log)
+//         //     //console.log(params.normalModuleFactory)
 
 //         // })
 //         // compiler.hooks.contextModuleFactory.tap('ReducerImportsPlugin', params => {
-//             //console.log(params)
-//             // console.log(params.hooks.contextModuleFiles)
-//             //Object.entries(params).forEach(console.log)
+//             ////console.log(params)
+//             // //console.log(params.hooks.contextModuleFiles)
+//             //Object.entries(params).forEach(//console.log)
 //         //})
 //         // compiler.hooks.contextModuleFiles.tapWaterfall('ReducerImportsPlugin', params => {
-//         //     console.log(params)
+//         //     //console.log(params)
 //         // })
 //         // compiler.hooks.buildModule.tap('ReducerImportsPlugin', m => {
-//         //     console.log(m)
+//         //     //console.log(m)
 //         // })
 //     }
 // };

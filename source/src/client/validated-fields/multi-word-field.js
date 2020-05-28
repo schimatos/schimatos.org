@@ -8,9 +8,9 @@ export const MultiWordField = (props) => {
 
 
     const getFields = (pattern, value, oldPattern, oldFields) => {
-        console.log('get fields')
+        //console.log('get fields')
         const splitReg = pattern => {
-            console.log('split reg')
+            //console.log('split reg')
             const bracketMap = {
                 '{': '}',
                 '[': ']',
@@ -33,25 +33,25 @@ export const MultiWordField = (props) => {
                             const bracket = t[t.length - 1];
                             const toRepeat = _.range(0, t.length).reduce(([value, count], j) => {
                                 if (value) {
-                                    console.log('value', value, count)
+                                    //console.log('value', value, count)
                                     return [value, count];
                                 }
                                 const a = (count === 1) && t[t.length - j - 1] === bracketMap2[bracket];
                                 if ((count === 1) && t[t.length - j] === bracketMap2[bracket]) {
                                     const toReturn = [t.slice(t.length - j, t.length), 1];
-                                    console.log('to return other', toReturn)
+                                    //console.log('to return other', toReturn)
                                     return toReturn
                                 }
                                 const toReturn = (value ? [value, count] : (((count === 1) && t[t.length - j -1] === bracketMap2[bracket]) ? [t.slice(t.length - j-1, t.length), 1] : ([false, count + (t[t.length - j - 1] === bracket && (t.length - j - 1 < 1 || t[t.length - j - 2] !== '\\') ? 1 : (t[t.length - j - 1] === bracketMap2[bracket] && (t.length - j - 1 < 1 || t[t.length - j - 2] !== '\\') ? -1 : 0))])));
-                                console.log('to return', toReturn)
+                                //console.log('to return', toReturn)
                                 return toReturn
                             }, [false, 1])[0] || t.slice(1, t.length - 1);
-                            console.log('if', toRepeat)
+                            //console.log('if', toRepeat)
                             const repeatTerm = [']'].includes(t[t.length - 1]) ? '[' + toRepeat + ']' : toRepeat
                             return _.range(0, no - 1).reduce((total, foo) => total + repeatTerm, t);
                         }
                         else {
-                            console.log('else')
+                            //console.log('else')
                             return _.range(0, no - 1).reduce((total, foo) => total + t[t.length - 1], t);
                         }
                     }
@@ -59,7 +59,7 @@ export const MultiWordField = (props) => {
                 }, '')
                 .split('')
                 .reduce(([all, bracket, depth, previous], x) => {
-                    console.log(all, bracket, depth, previous, x)
+                    //console.log(all, bracket, depth, previous, x)
                     if (['[', '{', '('].includes(x) && previous !== `\\` && bracket === undefined) {
                         if (x === '{') {
                             all[all.length - 1] = all[all.length - 1] + x;
@@ -92,7 +92,7 @@ export const MultiWordField = (props) => {
                 }, [[''], undefined, 0, undefined])[0]
                 .filter(x => x !== '')
                 .map(x => {
-                    console.log(x)
+                    //console.log(x)
                     const canStrip = ['|', '?'].reduce((t, y) => t && !x.includes(y), true) && x.length > 0 && ['('].includes(x[0]) && [')'].includes(x[x.length - 1]);
                     return canStrip ? x.slice(1, x.length - 1) : x;
                 })
@@ -139,7 +139,7 @@ export const MultiWordField = (props) => {
                     if (t.length > 0) {
                         const [previous, prevSpecial, prevMin, prevMax] = t.pop();
                         const toAdd = special ? x : `${x}`.split('').reduce(([t, escaping], x) => (x === '\\' && !escaping) ? [t, x === '\\'] : [t + x, false], ['', false])[0];
-                        console.log('too add', toAdd, x)
+                        //console.log('too add', toAdd, x)
                         const updateNo = (a, b) => [a, b].includes(undefined) ? undefined : a + b;
                         return special === prevSpecial ? [...t, [previous + toAdd, prevSpecial, updateNo(prevMin, min), updateNo(prevMax, max)]] : [...t, [previous, prevSpecial, prevMin, prevMax], [toAdd, special, min, max]];
                     }
@@ -156,17 +156,17 @@ export const MultiWordField = (props) => {
             const components = specialSplit(String.raw`${internalPattern.slice(1, internalPattern.length - 1)}`).map(([element, special, min, max]) => {
                 return special ? [`/^${element}$/${flags}`.replace('$$/', '$/').replace('/^^', '/^'), special, min > 1 ? min : undefined, max > 1 ? max : undefined] : [element, special];
             });
-            console.log('components', components)
+            //console.log('components', components)
                 const components2 = components.map(x => {
-                    console.log(x[0][0])
+                    //console.log(x[0][0])
                     x[0] = x[0][0] === '\\' ? x[0].slice(1): x[0]
                     return [...x]
                 })
-                console.log('components2', components2)
+                //console.log('components2', components2)
             return components;
         };
         const specificValues = (pattern, value) => {
-            console.log('secific values')
+            //console.log('secific values')
             const fields = pattern === oldPattern ? oldFields : splitReg(pattern);
             const varFields = fields.filter(x => x[1]).map(x => x[0]);
             if (['', undefined].includes(value)) {
@@ -188,27 +188,27 @@ export const MultiWordField = (props) => {
                     }, []);
                 }, [[value]])
                     .reduce((t, x) => {
-                        console.log('x', x, x.length, varFields.length, t)
+                        //console.log('x', x, x.length, varFields.length, t)
                         return [...t, ...(x.length > 0 && x.length === varFields.length + 1 ? [x.slice(0, x.length - 1), x.slice(1)] : []), ...(x.length > 1 && x.length === varFields.length + 2 ? [x.slice(1, x.length - 1)] : []), ...(x.length === varFields.length ? [x] : [])];
                     }, []) // This is a hacky fix for enpty string appearing at the ends of the array
                     .filter(x => x.length = varFields.length)
                     //.filter(x => x.includes(undefined))
-                    console.log(splitOptions)
+                    //console.log(splitOptions)
                 const option = splitOptions.filter(x => x.length = varFields.length).reduce((t, option) => {
                     const isValid = option.reduce((total, opt, i) => {
                         return total && /^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/  // makeRegexp('/'+field[0]+'/')
                     }, true);
                     return t || (isValid ? option : false);
                 }, false);
-                console.log('option', option)
+                //console.log('option', option)
 
                 // const updatedOption = option.map(x => {
-                //     console.log(x[0][0])
+                //     //console.log(x[0][0])
                 //     x[0] = x[0][0] === '\\' ? x[0].slice(1): x[0]
                 //     return [...x]
                 // })
 
-                // console.log('option', updatedOption)
+                // //console.log('option', updatedOption)
 
                 const mappedFields = fields.map((x, i) => {
                     return x[1] ? [...x, option[0.5 * i + (fields[0][1] ? 0 : -0.5)]] : x;
@@ -234,17 +234,17 @@ export const MultiWordField = (props) => {
         }, {focus : [], changed : false})
 
 
-        console.log('regexed field')
+        //console.log('regexed field')
         const { handleSubmit, register, errors, setValue, triggerValidation } = useForm();
 
         useWindowDimensions()
         const {width} = getWindowDimensions()
 
         const submit = e => {
-            console.log('submit called', state)
+            //console.log('submit called', state)
 
             handleSubmit(v => {
-                console.log('handle submit called', state)
+                //console.log('handle submit called', state)
                 const remade = remakeWord(v)
                 if (remade !== value) {
                     onSubmit(remade)
@@ -253,12 +253,12 @@ export const MultiWordField = (props) => {
         };
 
         useEffect(() => {
-            console.log('use effect called')
+            //console.log('use effect called')
             state.focus.length === 0 && state.changed && submit()
         }, [state.focus.length])
 
         useEffect(() => {
-            console.log('registrations', registrations)
+            //console.log('registrations', registrations)
             registrations.forEach(x => register(x[0], x[1]));
         }, [registrations]);
 
@@ -266,14 +266,14 @@ export const MultiWordField = (props) => {
             values.forEach(x => setValue(x[0], x[1]));
         }, hash(values));
 
-        console.log(errors)
+        //console.log(errors)
 
         return (<Form onSubmit={submit}>
             <div style={{margin : '0px', padding : '0px', textAlign : 'center'}}>
             <Grid style={{ padding: '0px', margin: '0px' }}>
                 <Grid.Row centered style={{ padding: '0px', margin: '0px' }}>
                     {fields.map((x, i) => <Grid.Column key={i} verticalAlign={'bottom'} style={typeof (x) === 'string' ? { margin: '0px', padding: '0px', width : `auto` } : { width: x.maxchar ? `${(x.maxchar + 4)*12}px` : `${(width-pixelsTaken-12)/emptyFields}px`, padding: '3px', margin : '0px' }}>
-                        {console.log(x.maxchar)}
+                        {//console.log(x.maxchar)}
                         {typeof (x) !== 'string' ? 
                             <Form.Input {...x}
                                 fluid
@@ -286,13 +286,13 @@ export const MultiWordField = (props) => {
 
                                     setTimeout(() => {
                                         dispatch({type :'REMOVE', id : i})
-                                        console.log(state)
+                                        //console.log(state)
                                         //state.length === 0 && 
                                         //submit()
                                     }, 1)
                                 }}
                                 onChange={async (e) => {
-                                    console.log('onchange called', e.target.value)
+                                    //console.log('onchange called', e.target.value)
                                     setValue(`${name}w${i}`, e.target.value);
                                     if (x.maxchar && e.target.value.length > x.maxchar) {
                                         await triggerValidation(`${name}w${i}`);
@@ -346,7 +346,7 @@ export const MultiWordField = (props) => {
 
             const {source, flags} = regex
             const mixed = flags.includes('i')
-            console.log('mixed', mixed)
+            //console.log('mixed', mixed)
 
             const expressions = [
                 ['A-Z', mixed ? 'letter' : 'uppercase letter'],
@@ -431,10 +431,10 @@ export const MultiWordField = (props) => {
         }
 
 
-        console.log('get details', props, state)
+        //console.log('get details', props, state)
         const {pattern, name, defaultValue} = props
         const [fields, rawFields] = getFields(pattern, defaultValue, state.pattern, state.rawFields);
-        console.log(fields, rawFields)
+        //console.log(fields, rawFields)
         const formValues = fields.reduce((total, x, i) => {
             return x[1] ? [...total, [`${name}w${i}`, x[4]]] : total;
         }, []);
@@ -467,7 +467,7 @@ export const MultiWordField = (props) => {
         };
 
         const [pixelsTaken, emptyFields] = state.pattern !== pattern ? rawFields.reduce(([taken, empty], x) => {
-            console.log(x, x[1] , [x[0].length*8 + taken, empty] , (x[3] ? [x[3]*8 + taken, empty] : [taken, empty + 1]))
+            //console.log(x, x[1] , [x[0].length*8 + taken, empty] , (x[3] ? [x[3]*8 + taken, empty] : [taken, empty + 1]))
             // Should mek values below less hard  coded, they need to account for padding
             return !x[1] ? [x[0].length*12+ 6 + taken, empty] : (x[3] ? [(x[3]+4)*12 +6 + taken, empty] : [taken, empty + 1])
         }, [0, 0]) : [state.pixelsTaken, state.emptyFields]
@@ -478,7 +478,7 @@ export const MultiWordField = (props) => {
     const [state, setState] = useState({fields : [], registrations : [], values : []})
 
     useEffect(() => {
-        console.log('props', props)
+        //console.log('props', props)
         setState(getDetails(props, state))
     }, [props.pattern, props.defaultValue])
 

@@ -2,8 +2,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 //const ReducerImportsPlugin = require('./webpack-plugins/reducer-imports-plugin')
-
-const outputDirectory = 'dist';
+const {WebpackWarPlugin} = require('webpack-war-plugin')
+const outputDirectory = '../dist';
 
 module.exports = {
   node: {
@@ -71,6 +71,7 @@ module.exports = {
       template: './public/index.html',
       filename: 'supplier/index.html',
       chunks: ['supplier']
-    })
+    }),
+    new WebpackWarPlugin()
   ]
 };

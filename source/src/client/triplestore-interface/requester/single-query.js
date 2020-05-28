@@ -23,10 +23,10 @@ const updatedHeader = (options, error, details) => {
 // const myRequest = async (options, details) => {
 //     return new Promise((resolve, reject) => {
 //         request(options, (error, response, body) => {
-//             console.log('at response', error, response, body)
+//             //console.log('at response', error, response, body)
 //             if (error?.response?.status === 401) {
 //                 const update = updatedHeader(options, error, details)
-//                 console.log('updated headers', update)
+//                 //console.log('updated headers', update)
 //                 request(update, (e, r, b) => {
 //                     if (e) {
 //                         reject('x')
@@ -47,22 +47,22 @@ const myRequest = async (options, details) => {
     // const {username, password} = details
     // const authenticator = www_authenticate.authenticator(username, password)
 
-    // console.log('options', options, details)
+    // //console.log('options', options, details)
 
-    // // console.log('at my request', options, details)
+    // // //console.log('at my request', options, details)
 
     // // const response = await fetch(options)
 
-    // // console.log('response', await response)
+    // // //console.log('response', await response)
 
 
-    // //console.log('options at myRequest', o)
+    // ////console.log('options at myRequest', o)
     // //const options = {...o, data : {form : o.data }}
-    // // console.log('converted options', options)
+    // // //console.log('converted options', options)
     return new Promise((resolve, reject) => {
     //     axios(options)
     //     .then(response => {
-    //         console.log('resolve inside then', response)
+    //         //console.log('resolve inside then', response)
     //         authenticator.get_challenge(response)
     //         authenticator.authenticate_request_options(options)
 
@@ -71,7 +71,7 @@ const myRequest = async (options, details) => {
     //     .catch(error => {
     //         if (error?.response?.status === 401) {
     //             const newOptions = updatedHeader(options, error, details)
-    //             console.log('newOptions')
+    //             //console.log('newOptions')
     //             axios(newOptions)
     //             .then(resolve)
     //             .catch(reject)
@@ -83,12 +83,12 @@ const myRequest = async (options, details) => {
 
 
 
-        console.log('options', options)
+        //console.log('options', options)
         request(options, (error, response, body) => {
-            console.log('at response', error, response, body)
+            //console.log('at response', error, response, body)
             if (error?.response?.status === 401) {
                 const update = updatedHeader(options, error, details)
-                console.log('updated headers', update)
+                //console.log('updated headers', update)
                 request(update, (e, r, b) => {
                     if (e) {
                         reject('x')
@@ -107,12 +107,12 @@ const myRequest = async (options, details) => {
 
 const makeQuery = async (qu, start_graph, triplestore, preProcess, preProcessCatch, graph_details, recurse, details) => {
     const {settings, knowledge_graphs, shacl_graphs, schema_prefixes, timeout, type_graphs} = triplestore
-    console.log("start fo make query", qu)
+    //console.log("start fo make query", qu)
     const {knowledge_graph, shacl_graph, additional_shacls, type_graph, additional_types} = settings
     const kgraph = knowledge_graphs[knowledge_graph]
     const sgraph = shacl_graphs[shacl_graph]
     const sgraphs = [...(additional_shacls.map(graph => shacl_graphs[graph])), sgraph]
-    console.log('type graph', type_graphs, triplestore)
+    //console.log('type graph', type_graphs, triplestore)
     const tgraph = type_graphs[type_graph]
     const tgraphs = [...(additional_types.map(graph => type_graphs[graph])), tgraph]
 
@@ -145,7 +145,7 @@ const makeQuery = async (qu, start_graph, triplestore, preProcess, preProcessCat
             }
             return Object.entries(headers).reduce((t, [key, val]) => t+key+'='+val, '?')
         }
-        const baseIRI = graph.sparql_endpoint + '/' + graph.endpoint_extension
+        const baseIRI = graph.sparql_endpoint + '/' + (!qu.includes('SELECT') ? (graph.update_extension || graph.endpoint_extension) : graph.endpoint_extension)
         return authentication ? baseIRI + IRIextension() : baseIRI
     }
 
@@ -158,19 +158,31 @@ const makeQuery = async (qu, start_graph, triplestore, preProcess, preProcessCat
                     ['fsgraph', 'SERVICE <'+endpoint(sgraph, true)],
                     ['ftgraph', 'SERVICE <'+endpoint(tgraph, true)],
                     ['fkgraph', 'SERVICE <'+endpoint(kgraph, true)+'>'],
-                    ['snamed', sgraph.location.includes('http://') ? '<' + sgraph.location + '>' : sgraph.location],
-                    ['tnamed', sgraph.location.includes('http://') ? '<' + sgraph.location + '>' : sgraph.location],
-                    ['knamed', kgraph.location.includes('http://') ? '<' + kgraph.location + '>' : kgraph.location]]
+                    ['snamed', '<' + sgraph.location + '>'],
+                    ['tnamed', '<' + sgraph.location + '>'],
+                    ['knamed', '<' + kgraph.location + '>']]
+    
+    const p = sparql_prefixes.split('\n')
+    const quer = replacePseudo(graphIRIs, qu)
+
+    const sp = p.reduce((t, line) => {
+
+        if (quer.includes(line.split(':')[0].replace('PREFIX ', ''))) {
+            return t + '\n' + line
+        } else {
+            return line
+        }
+    }, '')
 
     const full_query = sparql_prefixes + replacePseudo(graphIRIs, qu)
 
     const sendQuery = async (graph, query) => {
-            console.log('query sent :)', query, graph)
+            //console.log('query sent :)', query, graph)
             try {
                 const auth = {"Authorization" : "Basic " + new Buffer(`${graph['authentication']['username']}:${graph['authentication']['password']}`).toString("base64")}
                 const isauth = graph['authentication']['username'] + graph['authentication']['password'] !== ''
                 const response = await myRequest({
-                    uri : `${graph.sparql_endpoint}/${graph.endpoint_extension}`,
+                    uri : `${graph.sparql_endpoint}/${(!qu.includes('SELECT') ? (graph.update_extension || graph.endpoint_extension) : graph.endpoint_extension)}`,
                     headers : {...graph.headers, ...(isauth ? auth : {}),
                     "Authorization" : "Basic " + new Buffer(`${graph['authentication']['username']}:${graph['authentication']['password']}`).toString("base64"),
                     // 'Access-Control-Allow-Origin' : '*',
@@ -183,7 +195,7 @@ const makeQuery = async (qu, start_graph, triplestore, preProcess, preProcessCat
                         //"timeout" : timeout
                     },
                     //'Access-Control-Allow-Origin' : "*",
-                    form : {query},//, mode : "cors"
+                    form : {query, update : query},//, mode : "cors"
                     "Authorization" : "Basic " + new Buffer(`${graph['authentication']['username']}:${graph['authentication']['password']}`).toString("base64"),
                     method : graph.request_type || 'POST'//,
                     // 'Access-Control-Allow-Origin' : '*',
@@ -191,27 +203,27 @@ const makeQuery = async (qu, start_graph, triplestore, preProcess, preProcessCat
                     // 'Access-Control-Allow-Methods' : 'POST, GET, PUT, DELETE, OPTIONS',
                     // 'Access-Control-Allow-Headers' : 'Content-Type'
                 }, {...graph.authentication, uri : '/' + graph.endpoint_extension, method : graph.request_type})
-                console.log('awaiting response')
-                console.log('response', await response, graph, query)
+                //console.log('awaiting response')
+                //console.log('response', await response, graph, query)
 
                 if (response.statusCode !== 200) {
-                    console.log(await response)
+                    //console.log(await response)
                     return await preProcess ? preProcessor([]) : []
                 } else {
-                    console.log('inside else statement')
-                    console.log(await await response)
+                    //console.log('inside else statement')
+                    //console.log(await await response)
                     const parsed = await JSON.parse(await response.body).results.bindings
-                    console.log('parsed', await parsed)
+                    //console.log('parsed', await parsed)
                     const processed = await preProcessor(await parsed)
-                    console.log('processed', await processed)
+                    //console.log('processed', await processed)
                     const r = await preProcessor ? await processed : await parsed
 
-                    console.log('recurse', recurse)
+                    //console.log('recurse', recurse)
 
                     if (recurse) {
-                        console.log('inside recurse if', details)
+                        //console.log('inside recurse if', details)
                         const nextQueries = await recurse(await r, details)
-                        console.log('next queries', nextQueries)
+                        //console.log('next queries', nextQueries)
                         const q = nextQueries.map(async ([query, accumulator]) => [accumulator, await makeQuery(
                             query,
                             start_graph,
@@ -224,9 +236,9 @@ const makeQuery = async (qu, start_graph, triplestore, preProcess, preProcessCat
                         )])
 
                         const resolved = await Promise.all(q)
-                        console.log('resolved', resolved)
+                        //console.log('resolved', resolved)
                         const aggregatedResult = (await resolved).reduce((t, [accumulator, res]) => accumulator(t, res)  , await r)
-                        console.log('aggregated result', aggregatedResult)
+                        //console.log('aggregated result', aggregatedResult)
 
 
                         return aggregatedResult
@@ -248,25 +260,25 @@ const makeQuery = async (qu, start_graph, triplestore, preProcess, preProcessCat
                         //     )
                         // }
                     } else {
-                        console.log('at response')
-                        console.log('at response', await r)
+                        //console.log('at response')
+                        //console.log('at response', await r)
                         return await r
                     }
 
                 }
             } catch (e) {
-                console.log(e)
+                //console.log(e)
                 return preProcess ? preProcessor([]) : []
             }
         }
     
     if (start_graph !== 'sgraph' && start_graph !== 'kgraph' && start_graph !== 'tgraph') {
-        console.log('start', start_graph)
+        //console.log('start', start_graph)
         const s = shacl_graphs[start_graph]
         const specIRIs = [['Asprefix', s.prefix],['Asnamed', '<'+s.location+ '>'], ['Asgraph', '<'+endpoint(s, false)+ '>'], ['Afsgraph', '<'+endpoint(s, true)+'>']]
         const q = replacePseudo(specIRIs, full_query)
         const res = await sendQuery(s, q)
-        console.log('res1', await res)
+        //console.log('res1', await res)
         return await res
     } else if (full_query.includes('{Asnamed}') || full_query.includes('{Afsgraph}') || full_query.includes('{Asgraph}')) {
         return [shacl_graph, ...additional_shacls].map(async x => {
@@ -274,7 +286,7 @@ const makeQuery = async (qu, start_graph, triplestore, preProcess, preProcessCat
             const specIRIs = [['Asprefix', s.prefix],['Asnamed', '<'+s.location+ '>'], ['Asgraph', '<'+endpoint(s, false)+ '>'], ['Afsgraph', '<'+endpoint(s, true)+'>']]
             const q = replacePseudo(specIRIs, full_query)
             const res = graph_details ? [x, await sendQuery(start_graph === 'kgraph' ? kgraph : s, q)] : sendQuery(start_graph === 'kgraph' ? kgraph : s, q)
-            console.log('res2', res)
+            //console.log('res2', res)
             return res
         })
     } else if (full_query.includes('{Atnamed}') || full_query.includes('{Aftgraph}') || full_query.includes('{Atgraph}')) {
@@ -283,14 +295,14 @@ const makeQuery = async (qu, start_graph, triplestore, preProcess, preProcessCat
             const specIRIs = [['Atprefix', s.prefix],['Atnamed', '<'+s.location+ '>'], ['Atgraph', '<'+endpoint(s, false)+ '>'], ['Aftgraph', '<'+endpoint(s, true)+'>']]
             const q = replacePseudo(specIRIs, full_query)
             const res = graph_details ? [x, await sendQuery(start_graph === 'kgraph' ? kgraph : s, q)] : sendQuery(start_graph === 'kgraph' ? kgraph : s, q)
-            console.log('res2', res)
+            //console.log('res2', res)
             return res
         })
     } else {
         const specIRIs = [['Asprefix', sgraph.prefix],['Asnamed', sgraph.location.includes('http://') ? '<' + sgraph.location + '>' : sgraph.location], ['Asgraph', '<' +endpoint(sgraph, false)+'>'], ['Afsgraph', '<' +endpoint(sgraph, true)]+'>']
         const q = replacePseudo(specIRIs, full_query)
         const res = await sendQuery(start_graph === 'kgraph' ? kgraph : sgraph, q)
-        console.log('res3', res)
+        //console.log('res3', res)
         return await res
     }
 }

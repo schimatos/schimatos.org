@@ -9,7 +9,6 @@ import shacl from '../../context/reducers/shacl'
 import { access } from 'fs'
 
 export default (shaclFile) => {
-    console.log('shcalFile', shaclFile)
     const IRI = IRIField('knowledge')
     const Name = IRIField('shacl')
     const shaclConversions = conversions(1)
@@ -62,19 +61,19 @@ export default (shaclFile) => {
         return l5 + '.ttl'
     }
 
-    const initialState = {...base, turtle : '\ta sh:NodeShape ;\t' + shaclFile.replace(',h',' h').replace(';h',' h')}
+    const initialState = {...base, turtle : 'ex:shapeName\n\ta sh:NodeShape ;\t' + shaclFile.replace(',h',' h').replace(';h',' h')}
 
     const targOpts = (state) => ['Node', 'Class', 'ObjectsOf', 'SubjectsOf'].map(n => {
         return [p => <IRI {...p}/>, n, {placeholder : `Target ${n}${n === 'Class' ? 'e' : ''}s`, additionLabel : `Add ${n}: `, options : state[n], search :true,  noResultsMessage : `Type the name of the ${n} you wish to associate with this shacl.`, multiple : true, fluid : true, selection : true, allowAdditions : true}, `${n}${n === 'Class' ? 'e' : ''}s`,{routine : x => ({...x, turtle :  remakeTtl(x)})}]
     })
     const content = state => [
-        ['Shacl Name', [p => <Name {...p}/>, 'name', {placeholder : 'Name...'},,{routine : x => ({...x, turtle :  x})}]],
-       ['Shacl Targets', ...targOpts(state)],
+    //     ['Shacl Name', [p => <Name {...p}/>, 'name', {placeholder : 'Name...'},,{routine : x => ({...x, turtle :  x})}]],
+    //    ['Shacl Targets', ...targOpts(state)],
         ['Shacl File', [props => <TextArea {...{...props, style : {width : '100%'}}} />, 'turtle',,,{routine : x => {
-            console.log('routine', x)
+
             const newState = {...x, turtle :  x}
-            console.log('state after routine', newState)
-            return newState
+
+            return x//newState
         }}]
         ,[() => <DownloadButton style={{align : 'right'}} state={state} filename={getLast(state.name)} text={state.turtle}/>, 'empt']
         ]

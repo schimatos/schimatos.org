@@ -9,7 +9,7 @@ export const optionsList = ({searchBy, search, makeQueryTerm, makeIRI}) => {
         case 'Name': return `
             ${header()}
             WHERE {{OPTIONAL{?target ?p ?o}} UNION {OPTIONAL{?s ?p2 ?target}}
-            FILTER(bif:contains(?target, "'${search.replace(/ /g, "' and '") || escapeRegExp(search)}'"))}`
+            FILTER(regex(?target, "'${search.replace(/ /g, "' and '") || escapeRegExp(search)}'"))}`
         case 'Subjects Of':
             return header() + `WHERE {?target ${makeQueryTerm(makeIRI(search))} ?o}`
         case 'Objects Of':
@@ -18,14 +18,14 @@ export const optionsList = ({searchBy, search, makeQueryTerm, makeIRI}) => {
             return header() + `WHERE {?target a ${makeQueryTerm(makeIRI(search))}}`
         case 'Value':
             return header() + `WHERE {?target rdf:value ?value
-                FILTER(bif:contains(?value, "'${search.replace(/ /g, "' and '") || escapeRegExp(search)}'"))
+                FILTER(regex(?value, '${search.replace(/ /g, "' and '") || escapeRegExp(search)}', 'i'))
             }`
         case 'Any':
                 return header() + `WHERE {?target ?p ?value
-                    FILTER(bif:contains(?value, "'${search.replace(/ /g, "' and '") || escapeRegExp(search)}'"))
+                    FILTER(regex(?value, '${search.replace(/ /g, "' and '") || escapeRegExp(search)}', 'i'))
             }`
         case 'Label':
             return header() + `WHERE {?target rdfs:label ?label
-                FILTER(bif:contains(?label, "'${search.replace(/ /g, "' and '") || escapeRegExp(search)}'"))
+                FILTER(regex(?label, '${search.replace(/ /g, "' and '") || escapeRegExp(search)}', 'i'))
             }`
         }}

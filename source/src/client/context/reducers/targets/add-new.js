@@ -2,7 +2,7 @@ import { keepCloning } from "../../../utils"
 
 export default (state, category, ids, requested, loading) => {
 
-    console.log('at add new', ids)
+    //console.log('at add new', ids)
 
     const blank = () => category === 'property' ? Object({
         selected : [],

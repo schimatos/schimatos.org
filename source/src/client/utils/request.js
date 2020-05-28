@@ -8,17 +8,17 @@ export const request = data => {
         .then(
             response => {
                 if (response.statusText !== 'OK') {
-                    console.log(response, 'not ok')
+                    //console.log(response, 'not ok')
                     errorFunc()
                     throw Error(response.statusText)
                 }
-                console.log('response')
-                console.log(response)
+                //console.log('response')
+                //console.log(response)
                 return response.data
             })
         .then(responseFunc)
         .catch(error => {
-            console.log(error)
+            //console.log(error)
             errorFunc()
         })
 }

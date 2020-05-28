@@ -17,7 +17,7 @@ export default data => {
             })
         .then(responseFunc)
         .catch(error => {
-            console.log(error)
+            //console.log(error)
             errorFunc()
         })
 }

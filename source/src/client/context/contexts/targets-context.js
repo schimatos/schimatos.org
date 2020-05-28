@@ -161,6 +161,12 @@ const [TargetsContext, TargetsProvider] = customProvider(reducer, {
         },
         'xsd:string' : {
             datatype : 'xsd:anySimpleType'
+        },
+        'tp:ORCID' : {
+            pattern : "^[0-9]{4}-[0-9]{4}-[0-9]{4}-([0-9]{4}|[0-9]{3}X)$" 
+        },
+        'http://shacl.kg/types/ORCID' : {
+            pattern : "^[0-9]{4}-[0-9]{4}-[0-9]{4}-([0-9]{4}|[0-9]{3}X)$" 
         }
     },
     propertyTypes : {

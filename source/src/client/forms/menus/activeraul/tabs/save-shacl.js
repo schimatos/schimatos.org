@@ -1,7 +1,7 @@
 
 import {input, checkbox, dropdown, button} from '../../../fields/functional-react'
 import {useActiveraul} from '../../../../custom-hooks'
-import {IRIField} from '../../../../validated-fields/IRI-field'
+import IRIField from '../../../../validated-fields/IRI-field'
 
 import saveShaclModal from '../../../modals/save-shacl'
 
@@ -27,7 +27,7 @@ export default () => {
         return {initialState, content, header : 'Save Shacl'}
     }
 
-    console.log('get shacl text', getShaclText())
+    //console.log('get shacl text', getShaclText())
     
     return {
         modal : saveShaclModal(getShaclText()),

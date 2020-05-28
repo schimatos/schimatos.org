@@ -12,7 +12,7 @@ import saveShaclModal from '../forms/modals/save-shacl'
 import fieldModal from '../forms/fields/field-modal'
 
 export default ({opts,activeraulContext}) => {
-    console.log('at selections form')
+    //console.log('at selections form')
 
     const saveSelection = (selectedShacls) => {
         fieldModal(saveShaclModal())
@@ -181,7 +181,7 @@ export default ({opts,activeraulContext}) => {
                         }), 
                         rotate : true,
                         onChange : (e, {value}) => {
-                            console.log('VALUE', value)
+                            //console.log('VALUE', value)
                             eValDispatch('EDIT_SELECTIONS')(e, {value})
                         }})}
                     </Container>

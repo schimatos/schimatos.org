@@ -17,13 +17,13 @@ import base from './base-search'
 import {hash, startMatch, valuesMatch} from '../utils'
 
 export default ({opts}) => {
-    console.log('at target form')
+    //console.log('at target form')
     const triplestore = triplestoreInterface()
     const [{focus, properties, targets, propertyList},] = Activeraul()
     const [{schema_prefixes},] = useContext(TriplestoreContext)
     const {type, id} = focus
     const {displayIRI} = conversions(0)
-    console.log(focus, properties, targets, propertyList)
+    //console.log(focus, properties, targets, propertyList)
     const disabled = type === 'targets' ? (targets[id].submitted) : (
         propertyList[properties[id].property].maxCount
         && properties[id].children.length >= propertyList[properties[id].property].maxCount
@@ -69,12 +69,13 @@ export default ({opts}) => {
 
     const unpackSingle = iri => {
         const f = Object.entries(schema_prefixes).find(([k, v]) => iri.includes(v))
+        //console.log(f, iri)
         return f ? f[0] + ':' + iri.slice(f[1].length,) : iri
     }
     
     const detailsSection = (header, details) => {
         const [open, setOpen] = useState(false)
-
+    
         const detail = ([name, values], i) => {
             return (<>
             {i > 0 && <Divider/>}
@@ -89,13 +90,15 @@ export default ({opts}) => {
             </Grid.Row>
             </>)
         }
-
+        const nm = details.find(([k,v]) => k == 'http://www.w3.org/2000/01/rdf-schema#label')?.[1]
         return (
             <>
-            <div style={{textAlign : 'center', backgroundColor : '#A9A9A9', margin : '10px', borderRadius : '3px'}}>
-                <h5>{unpackSingle(header)}</h5>
+            <div style={{textAlign : 'center', width : '100%'}}>
+            <div style={{textAlign : 'center', backgroundColor : '#A9A9A9', margin : '10px', borderRadius : '3px', textAlign : 'center'}}>
+                <h5>{`${unpackSingle(header)}  (${nm})`}</h5>
             </div>
-            <Grid>{details.map(detail)}</Grid>
+            </div>
+            <Grid>{details.filter(([k,v]) => k != 'http://www.w3.org/2000/01/rdf-schema#label').map(detail)}</Grid>
             </>
         )
     }
@@ -125,7 +128,7 @@ export default ({opts}) => {
         query : 'LIST_OPTIONS',
         disabled,
         optionsFilter,
-        content : details.length > 0 && (() => <FullContent/>),
+        content : details.length > 0 && (() => <FullContent key='fullContet'/>),
         opts,
         convertionType : 'map',
         responseConversion : x => Object({key : x, text : displayIRI(x), value :x }),
@@ -307,7 +310,7 @@ export default ({opts}) => {
 //         // Textarea rows below https://stackoverflow.com/questions/8488729/how-to-count-the-number-of-lines-of-a-string-in-javascript/29607805
     
 //         return (
-//             <Form onClose={() => console.log('closing')}>
+//             <Form onClose={() => //console.log('closing')}>
 //                 <Input type='text' placeholder='Search...' action fluid>
 //                 {searchBy !== 'Custom' && searchBy !== 'All' &&  <input onKeyPress={keyPress} onChange={e => valDispatch('TEXT_CHANGE')(e.target.value)} value={searchText}/>}
 //                 <Select

@@ -2,7 +2,7 @@ import {setMinus, removeDuplicates} from '../../utils'
 
 export default ({TargetsContext : [{typeConstraints, propertyTypes},], endpoint}) => {
     const types = typesWithoutDetails(propertyTypes, typeConstraints)
-    //console.log('load type constraints called', types)
+    ////console.log('load type constraints called', types)
     if (types.length > 0) {
         endpoint({
             query : 'LOAD_TYPE_CONSTRAINTS',
@@ -14,9 +14,9 @@ export default ({TargetsContext : [{typeConstraints, propertyTypes},], endpoint}
 }
 
 const extractAllTypes = typesMapping => {
-    //console.log('types mapping', typesMapping)
+    ////console.log('types mapping', typesMapping)
     const allTypes = Object.values(typesMapping).reduce((t, {fromOptions, fromRange}) => {
-        //console.log(t, fromOptions, fromRange)
+        ////console.log(t, fromOptions, fromRange)
         return [...t, ...fromOptions, ...fromRange]
     }, [])
     return removeDuplicates(allTypes)

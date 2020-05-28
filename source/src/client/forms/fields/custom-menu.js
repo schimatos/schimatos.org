@@ -3,7 +3,7 @@ import {Icon, Menu, Popup, Confirm, Segment} from 'semantic-ui-react'
 import FieldModal from './field-modal'
 
 export default ({className, fixed, warnings, popups, icons}) => {
-    console.log('at custom menu')
+    //console.log('at custom menu')
     const [state, setState] = useState(false)
     const [modalState, setModal] = useState(false)
 
@@ -52,7 +52,7 @@ export default ({className, fixed, warnings, popups, icons}) => {
         </Menu>
     )
 
-    console.log('default active index', getDetails(modalState).defaultActiveIndex)
+    //console.log('default active index', getDetails(modalState).defaultActiveIndex)
 
     return (
         <>

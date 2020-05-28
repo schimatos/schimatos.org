@@ -10,6 +10,6 @@ const addFiles = (files, text) => {
             files.length > 0 ? addFiles(files, evt.target.result + text) : setState(evt.target.result + text)
     }} else {
     reader.onerror = function (evt) {
-        console.log(evt)
+        //console.log(evt)
     }}
 }

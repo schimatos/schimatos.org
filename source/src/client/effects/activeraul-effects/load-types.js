@@ -1,9 +1,9 @@
 import {setMinus, keyDelDict, removeDuplicates} from '../../utils'
 
 export default ({ActiveraulContext : [{propertyList},], TargetsContext : [{propertyTypes},], endpoint}) => {
-    //console.log('inside load types')
+    ////console.log('inside load types')
     const properties = findUnknownTypes(propertyList, propertyTypes)
-    //console.log('properties', properties)
+    ////console.log('properties', properties)
     if (properties.length > 0) {
         endpoint({
             query : 'LOAD_TYPES',

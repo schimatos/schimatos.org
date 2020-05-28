@@ -6,7 +6,7 @@ import _ from 'underscore'
 
 export default (state, {property}) => {
     //return state
-    console.log('at display submitted', state, property)
+    // //console.log('at display submitted', state, property)
     const ent = Object.entries(state.properties)
 
     const newState = ent.reduce((total, [k, v]) => {
@@ -14,7 +14,7 @@ export default (state, {property}) => {
 
         //const displayed = total.properties[k].children.map(x => total.targets[x].value).filter(x => x!== '')
 
-       // console.log(total, databaseSelections)
+       // //console.log(total, databaseSelections)
 
         if (total.propertyList[total.properties[k].property].pathType === 'alternativePath') {return total}
 
@@ -24,7 +24,7 @@ export default (state, {property}) => {
             total.properties[k].children.map(x => total.targets[x].value).filter(x => x!== '')
         )
 
-        //console.log('as', databaseSelections, displayed)
+        ////console.log('as', databaseSelections, displayed)
 
 
 

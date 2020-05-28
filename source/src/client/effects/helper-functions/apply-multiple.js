@@ -11,7 +11,7 @@ export default ({effects, contexts, hooks, props}) => {
         Array.isArray(trigger[1]) ? keyDelDict(trigger[0], trigger[1]) : keysDelDict(trigger[1], trigger[0])
         ) : trigger
 
-    //console.log
+    ////console.log
 
     return effects.map(effect => {
         const [e, trigger] = effect(p)

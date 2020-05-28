@@ -13,7 +13,7 @@ import conversions from '../custom-hooks/helper-functions/conversions'
 import base from './base-search'
 
 export default ({opts}) => {
-    console.log('at shacl form')
+    //console.log('at shacl form')
     const saveSelection = (selectedShacls) => {
         fieldModal(saveShaclModal())
     }
@@ -70,7 +70,7 @@ export default ({opts}) => {
             }), 
             rotate : true,
             onChange : (e, {value}) => {
-                console.log('VALUE', value)
+                //console.log('VALUE', value)
                 eValDispatch('EDIT_SELECTIONS')(e, {value})
             }})}
         </Container>

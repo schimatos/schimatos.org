@@ -8,7 +8,7 @@ import {TriplestoreContext} from '../context'
 import triplestoreInterface from '../triplestore-interface'
 
 export default ({opts}) => {
-    console.log('at shacl uplaod')
+    //console.log('at shacl uplaod')
     const triplestore = triplestoreInterface()
     
     const [state, setState] = useState('')
@@ -25,7 +25,7 @@ export default ({opts}) => {
                 files.length > 0 ? addFiles(files, evt.target.result + text) : setState(evt.target.result + text)
             } 
             reader.onerror = function (evt) {
-                console.log('error reading file')
+                //console.log('error reading file')
             }}
     }
 
@@ -44,6 +44,7 @@ export default ({opts}) => {
         <Form>
             <Input 
                 type="file" 
+                key = "uploader"
                 onChange={e => fileUpload(e)}
                 accept=".ttl"
                 multiple={true}/>

@@ -10,10 +10,10 @@ const DynamicButton = ({disabled,
     keyNo,
     attached,
     compact}) => {
-        console.log('dynamic button')
+        //console.log('dynamic button')
     const [state, setState] = useState(false)
 
-    console.log('dynamic button called')
+    //console.log('dynamic button called')
 
 
     const buttonClick = () => {

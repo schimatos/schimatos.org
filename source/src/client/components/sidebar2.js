@@ -32,9 +32,9 @@ export default ({direction, width, close, panels, visible, header, pushedContent
 
         const {innerWidth, innerHeight} = useWindowDimensions()
 
-        //console.log('windowWidth', innerWidth)
+        ////console.log('windowWidth', innerWidth)
 
-        //console.log('window dimensions', useWindowDimensions())
+        ////console.log('window dimensions', useWindowDimensions())
     
     
 
@@ -64,7 +64,7 @@ export default ({direction, width, close, panels, visible, header, pushedContent
           }
 
         const i2 = useWindowDimensions2().innerWidth
-        //console.log(i2)
+        ////console.log(i2)
         
         return (<Sidebar style={{height : '100%', padding : '0px', borderLeft : '0px', borderTop : '0px', borderBottom : '0px', borderRight : '0px'}}
         as={Segment.Group}

@@ -36,7 +36,7 @@ export default ({submit, open, close, initialState, content, header, conditions,
             //const fcondition = () => (field.length > 4 && ((field[4].advanced ===true && !advancedOptions) || !(field[4].condition ? field[4].condition(state) : true)))
             const notInput = (typeof(field) === 'string' || (isDict(field) && field.type))
             if (noPath() || fcondition()) {return total}
-            console.log('field',field)
+            //console.log('field',field)
             const CustomInput = ({name, ref}) => field[0]({...field[2], name, ref, value : state ? detail(state, field[1]) : undefined, key : i, onChange : (e, {value}) => dispatch({name : field[1], value, routine : (field.length > 4 && field[4].routine) ? field[4].routine : s => s})})
             return [...total,
                 <>

@@ -3,7 +3,7 @@ import {Sidebar, Segment, Transition, Button, Header, Container, Table} from 'se
 import rightSidebar from '../sections/right-sidebar'
 
 export default ({direction, width, close, panels, visible, header, pushedContent, outside}) => {
-  //console.log('at sidebar')
+  ////console.log('at sidebar')
 
     function getWindowDimensions() {
         const { innerWidth, innerHeight } = window;
@@ -71,7 +71,7 @@ export default ({direction, width, close, panels, visible, header, pushedContent
               }
     
             const i3 = useWindowDimensions3().innerWidth
-            //console.log(i3)
+            ////console.log(i3)
         return (<Segment basic style={{width : '300px', height : '100%', padding : '0px'}}>
             <div style={{borderColor : 'black', height : '100%', overflow : 'hidden'}}>
             {panels.map(([visible, children, header], key) => CustomTransition({visible, children, key, header}))}
@@ -115,7 +115,7 @@ export default ({direction, width, close, panels, visible, header, pushedContent
           }
 
         const i2 = useWindowDimensions2().innerWidth
-        //console.log(i2)
+        ////console.log(i2)
         
         return (<Sidebar style={{height : '100%', padding : '0px', borderLeft : '0px', borderTop : '0px', borderBottom : '0px', borderRight : '0px'}}
         as={Segment.Group}

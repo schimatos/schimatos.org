@@ -1,7 +1,7 @@
 import {keepCloning} from '../../../utils'
 
 export default (state, action) => {
-    //console.log('shacl reducer', state, action)
+    ////console.log('shacl reducer', state, action)
     const {shacl, type, id} = action
     switch (type) {
         case 'ALTER_SELECTION':

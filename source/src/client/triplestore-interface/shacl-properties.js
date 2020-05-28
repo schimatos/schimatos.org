@@ -9,7 +9,7 @@ export const shaclProperties = async (props) => {
     const {language} = triplestore
     const insertion = action === 'toInsert'
 
-    console.log('triplestore at start of shacl properties', triplestore)
+    //console.log('triplestore at start of shacl properties', triplestore)
 
     const a = Object.entries(shacls).map(([k, v]) => {
         return [k, v.reduce((t, [shacl, i, w, v, u]) => {
@@ -35,11 +35,11 @@ export const shaclProperties = async (props) => {
     })
 
     const reduceResults = async results => {
-        console.log('reduce results', results)
+        //console.log('reduce results', results)
         const {groups, constraints} = results.reduce((t, x) => {
-            console.log('reduce', t, x)
+            //console.log('reduce', t, x)
             const next = keepCloning({constraints : [...t.constraints, ...x.constraints], groups : {...t.groups, ...x.groups}})
-            console.log(next)
+            //console.log(next)
             return next
         }, Object({constraints : [], groups : {}}))
 
@@ -82,11 +82,11 @@ export const shaclProperties = async (props) => {
         const toFind = await removeDuplicates(Object.values(await res.constraints).reduce((t, x) => {
             return x.property ? (Array.isArray(x.property) ? [...t, ...x] : [...t, x.property]) : t
         }, []))
-        console.log('toFind', await toFind)
+        //console.log('toFind', await toFind)
         return toFind.map(blankNodeId => [getConstraint({blankNodeId, severities, language}), 
             (current, response) => {
             const constraints = current.constraints.map(x => {
-                console.log(x)
+                //console.log(x)
                 if (x.property === blankNodeId) {
                     x.property = response.constraints
                 } else if (Array.isArray(x) && x.property.includes(blankNodeId)) {
@@ -94,7 +94,7 @@ export const shaclProperties = async (props) => {
                 }
                 return keepCloning(x)
             })
-            console.log('current', current.groups, response.groups)
+            //console.log('current', current.groups, response.groups)
             const groups = {...current.groups, ...response.groups}
             return keepCloning({constraints, groups})
         }
@@ -113,33 +113,33 @@ export const shaclProperties = async (props) => {
     }
 
 
-    console.log('triplestore at end', triplestore)
+    //console.log('triplestore at end', triplestore)
     if (toInsert === undefined) {
         const results = await Promise.all(queryList.map(async ([graph, query, {severities, language}]) => {
-            console.log('deets', severities, language)
+            //console.log('deets', severities, language)
             const resp = await requester(query, graph, triplestore, postFilter, [], false, itermed, {severities, language})
-            console.log('resp', resp)    
+            //console.log('resp', resp)    
             return await keepCloning(resp)
         })) 
-        console.log('resilts2 qvcr5', keepCloning(await results))
+        //console.log('resilts2 qvcr5', keepCloning(await results))
         const p = keepCloning(await results)[0].constraints[0].property
-        console.log('p', p)
+        //console.log('p', p)
         const toReturn  = await reduceResults(await keepCloning(results))
         //toReturn.constraints = {...toReturn.constraints, property : keepCloning(p)}
-        console.log('resilts2ToReturn', await toReturn)
-        console.log('resilts2 qvcr5', keepCloning(await results))
+        //console.log('resilts2ToReturn', await toReturn)
+        //console.log('resilts2 qvcr5', keepCloning(await results))
         return await keepCloning(toReturn)//await toReturn
     } else {
         const inserted = await requester(singleUpdate({ action : 'insert', graph : 'knamed', triples : toInsert}), 'kgraph', triplestore)
         const results = await Promise.all(queryList.map(async ([graph, query, {severities, language}]) => {
-            console.log('deets', severities, language)
+            //console.log('deets', severities, language)
             const fx = await requester(query, graph, {...triplestore, inserted : (await inserted)},postFilter, [], false, itermed, {severities, language})
-            console.log('fx', fx)
+            //console.log('fx', fx)
             return await keepCloning(fx)
         })) 
-        console.log('resilts1', results)
+        //console.log('resilts1', results)
         const toReturn  = await reduceResults(await results)
-        console.log('toRturn', toReturn)
+        //console.log('toRturn', toReturn)
         return await keepCloning(toReturn)
     }
 }

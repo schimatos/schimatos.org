@@ -3,7 +3,7 @@ import {hash, callAll} from '../../utils'
 
 export default (effects, trigger, props) => {
     return useEffect(() => {
-        console.log(effects, trigger, props)
+        //console.log(effects, trigger, props)
         callAll(effects, props)
     }, hash(trigger))
 }

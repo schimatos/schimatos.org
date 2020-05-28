@@ -17,11 +17,11 @@ export const loadTypes = async ({properties, triplestore}) => {
 
     const noTypeInfo = setMinus(stillUnknownTypes, Object.keys(typesFromOptions))
     const noTypeDict = Object.fromEntries(noTypeInfo.map(p => [p,[]]))
-    console.log('types loaded in trip', typesFromOptions, knownRangeTypes)
+    //console.log('types loaded in trip', typesFromOptions, knownRangeTypes)
 
     const retrievedTypeInfo = await {...dictValuesMap(await knownRangeTypes, v => ({fromRange : v})), ...dictValuesMap((await {...typesFromOptions, ...noTypeDict}), v => ({fromOptions : v}))}
 
-    console.log('types loaded in trip', await retrievedTypeInfo)
+    //console.log('types loaded in trip', await retrievedTypeInfo)
 
     return await retrievedTypeInfo
 }

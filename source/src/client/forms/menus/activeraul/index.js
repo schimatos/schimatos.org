@@ -13,21 +13,21 @@ import {requester} from '../../../utils'
 
 
 export default () => {
-    console.log('at start of menu')
+    //console.log('at start of menu')
     const [{warnings, info, startPoint}, dispatchLayout] = useContext(LayoutContext)
-    console.log(1)
+    //console.log(1)
     const [{focus, properties, propertyList, targets},dispatch] = Activeraul()
-    console.log(2)
+    //console.log(2)
     const [state,] = useContext(ActiveraulContext)
-    console.log(3)
-    console.log(HistoryContext)
+    //console.log(3)
+    //console.log(HistoryContext)
     const [[history, histno],] = useContext(HistoryContext)
-    console.log(4)
+    //console.log(4)
     const {type, id} = focus
     const isProperty = focus.type === 'properties'
-    console.log(5)
+    //console.log(5)
     const {copyForm, remove, submission, undoForm, redoForm} = useActiveraul()
-    console.log('activeraul menut', targets, properties, focus, propertyList, state)
+    //console.log('activeraul menut', targets, properties, focus, propertyList, state)
 
     const name = focus.type === 'properties' ? (
         propertyList[properties[id].property].name ? propertyList[properties[id].property].name : propertyList[properties[id].property].path

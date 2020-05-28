@@ -9,7 +9,7 @@ import conversions from '../custom-hooks/helper-functions/conversions'
 import triplestoreInterface from '../triplestore-interface'
 
 export const useActiveraul = () => {
-    //console.log('use activeraul')
+    ////console.log('use activeraul')
     const {makeIRIMulti, makeIRIMixed, makeIRI} = conversions(0)
     const shaclConversions = conversions(1)
     const endpoint = endpointFunc()
@@ -30,7 +30,7 @@ export const useActiveraul = () => {
     )
 
     const addOptionFlexible = (type, id, v) => {
-        //console.log(type, id, v)
+        ////console.log(type, id, v)
         if (type === 'targets') {
             addOption(id, state.targets[id].parent, v)
         } else {
@@ -45,7 +45,7 @@ export const useActiveraul = () => {
 
     const addOption = (i, no, v, type) => {
         if (v!=='') {  
-            //console.log('type ad addOption', i, no, v, type)
+            ////console.log('type ad addOption', i, no, v, type)
         const value = v.includes(':') || !add_graph_prefixes || !(type || []).includes('anyURI') ? v : prefix + v
         dispatch({type : 'ADD_OPTION', i, value, targets, render : true, prefix, hide : hide_graph_prefixes})
         targetsDispatch({type : 'ADD_OPTION', no, value, prefix, hide : hide_graph_prefixes})
@@ -67,18 +67,21 @@ export const useActiveraul = () => {
         }
     }
 
-    const activeraulSubmission = async ({getShacl, insert, query, applyTo, shacls}) => {
-        const {type, id} = applyTo !== undefined ? applyTo : {...focus}
+    const activeraulSubmission = async ({getShacl, insert, query, applyTo, shacls, point : {type:type1, id:id1}={}}) => {
+        console.log('1')
+        const {type:type2, id:id2} = applyTo !== undefined ? applyTo : {...focus}
+        const type = type1 || type2
+        const id = id1 || id2
         const isTarg = type === 'targets'
         const key = isTarg ? state.targets[id].parent : id
         const ids = isTarg ? [id] : properties[id].children
         const targets = ids.map(i => state.targets[i].value)
         const prop = properties[key]
-        const {path, pathType, class : sClass, datatype} = prop.property !== undefined ? propertyList[prop.property]  : {path : '', pathType : ''}
+        const {path, pathType, class : sClass, datatype, node} = prop.property !== undefined ? propertyList[prop.property]  : {path : '', pathType : ''}
         const subject = prop.parent !== undefined ? state.targets[prop.parent].value : ''
         const action = key > -1 && insert ? 'insert' : undefined
-
-        console.log(sClass,propertyList[prop.property] )
+        console.log('2')
+        //console.log(sClass,propertyList[prop.property] )
 
         // sClass && endpoint({
         //     query : 'GRAPH_UPDATE',
@@ -87,7 +90,7 @@ export const useActiveraul = () => {
         //     toInsert : [[targets[0], 'a', ['',sClass]]]
         // })
 
-        //console.log('detauls', subject, path, targets)
+        ////console.log('detauls', subject, path, targets)
 
         // const datatypes = pathType === 'path' ? await new Promise((resolve, reject) => {
         //     triplestore({
@@ -115,13 +118,13 @@ export const useActiveraul = () => {
         //     return [...total, ...v.map(x => [k, x])]
         // }, [])
 
-        // //console.log('datatypes', await datatypes, await classes, targsToRemove)
+        // ////console.log('datatypes', await datatypes, await classes, targsToRemove)
 
         // const classInserts = sClass ? targets.reduce((total, x) => {
         //     return [...total, ...[classes[x].includes(sClass) ? [] : [[x, 'a', sClass]]]]
         // }, []) : []
 
-        //console.log('class inserts', classInserts)
+        ////console.log('class inserts', classInserts)
         
         //const triplestore({responseFunc})
 
@@ -145,14 +148,16 @@ export const useActiveraul = () => {
         // also need to handle the undo process for taking into account when existing class be accidentally deleted
 
 
-
+        console.log(node)
+        const shacls2 = shacls == [] && node ? {[settings.knowledge_graph] : [[node, true,true,true,true]]} : shacls
+        console.log(node,  {getShacl:getShacl || !!node, targets, shacls: shacls2})
         endpoint({
             query, context : 'activeraul',
             edit : [{subject, path, targets : datatype ? targets.map(x => x) : targets, pathType, action, ...(sClass && {additionalTriples : [['<'+targets[0] + '>', '<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>', '<' + sClass + '>']]})}, {subject, path, pathType, action : 'delete'}],
             init : {type : 'SUBMISSION_MADE', id, t : type, loading : true},
             response : {type : 'SUBMISSION_RESPONSE', dispatch : targetsDispatch, id},
             error : {type : 'SUBMISSION_ERROR', id, t : type},
-            other : {getShacl, targets, shacls}
+            other : {getShacl:getShacl || !!node, targets, shacls: shacls2}
         })
     }
 
@@ -188,16 +193,22 @@ export const useActiveraul = () => {
         activeraulSubmission({getShacl : true, insert : true, query : 'SHACL_PROPERTIES', shacls})
     }
 
-    const submission = getShacl => {
-        activeraulSubmission({getShacl, insert : true, query : 'SHACL_PROPERTIES', shacls : []})
+    const submission = (getShacl, point) => {
+        activeraulSubmission({getShacl, insert : true, query : 'SHACL_PROPERTIES', shacls : [], point})
         //activeraulSubmission({getShacl, insert : true, query : 'ALL_PROPERTIES'})
+    }
+
+    const submitAll = () => {
+        Object.entries(state.targets).forEach(([k, x]) => {
+            !x.submitted && x.value !== '' && submission(false, {type : 'targets', id : k})
+        })
     }
 
     const addPath = vl => {
         const value = filterDict({...vl, ...Object.fromEntries(vl.other)}, ([k,v]) => k!=='other' && v!=='')
-        //console.log('value at add path',value)
+        ////console.log('value at add path',value)
         value.path = makeIRIMixed(value.path)
-        //console.log('value at add path',value)
+        ////console.log('value at add path',value)
         dispatch({type : 'ADD_PATH', dispatch : targetsDispatch, value})
     }
 
@@ -210,9 +221,9 @@ export const useActiveraul = () => {
     })
 
     const remove = (t, id, editTriplestore) => {
-        //console.log('editTriplestore', editTriplestore)
+        ////console.log('editTriplestore', editTriplestore)
         startPoint.type === t && startPoint.id === id && dispatchLayout({type : 'CHANGE_START', startPoint : {type : t === 'targets' ? 'properties' : 'targets', id : state[t][id].parent}})
-        //console.log(editTriplestore, 'editTriplestore')
+        ////console.log(editTriplestore, 'editTriplestore')
         // editTriplestore ? editQuery({
         //     type : t, id, action : 'delete',
         //     init : {type : 'CHANGE_LOAD_STATUS', loading : true,  t, id},
@@ -260,7 +271,7 @@ export const useActiveraul = () => {
             const childs = state.targets[id].children
             .reduce((total, x) => {
                 const {children, property} = state.properties[x]
-                //console.log('inside turtle properties')
+                ////console.log('inside turtle properties')
                 return `${total}${property2ttl(state.propertyList[property], children.reduce((t, i) => `${t}${turtleProperties(i, state, depth + 1)}`, ``))}`
             }, ``)
             return childs
@@ -276,7 +287,7 @@ export const useActiveraul = () => {
 
         'hello'.trimEnd().replace(',',';')
 
-        //console.log(res)
+        ////console.log(res)
 
         endpoint({
             query : 'INSERT_TTL',
@@ -312,7 +323,7 @@ export const useActiveraul = () => {
             const childs = (state.targets[id]?.children || [])
             .reduce((total, x) => {
                 const {children, property} = state.properties[x]
-                console.log('inside turtle properties', depth)
+                //console.log('inside turtle properties', depth)
                 return `${total}${property2ttl(state.propertyList[property], children.reduce((t, i) => `${t}${turtleProperties(i, state, depth + 1)}`, ``), depth)}`
             }, ``)
             return childs
@@ -327,7 +338,7 @@ export const useActiveraul = () => {
 
         'hello'.trimEnd().replace(',',';')
 
-        console.log(res)
+        //console.log(res)
 
         return res
 
@@ -363,10 +374,10 @@ export const useActiveraul = () => {
     }
 
     const getShacl = (property, children, depth) => {
-        console.log('get shacl called', property, children, depth)
+        //console.log('get shacl called', property, children, depth)
         try {
             const indent = _.range(0, depth).reduce((total, x) => `${total}\t`, ``)
-            console.log('indent', indent, depth)
+            //console.log('indent', indent, depth)
             // const ppty = Object.fromEntries(Object.entries(property)).map(([k,v]) => {
             //     if (Array.isArray(v)) {
             //         return [k, v.reduce((t, x) => t + ' <' + x + '>' ,'')]
@@ -378,7 +389,7 @@ export const useActiveraul = () => {
             // } )
             const prop = { ...keysDelDict(['path', 'pathType'], property), [property.pathType] :  property.path  }
             // const prop2 = Object.fromEntries(Object.entries(prop).map(([k,v]) => {
-            //     console.log('inside prop 2')
+            //     //console.log('inside prop 2')
                 // if (Array.isArray(v)) {
                 //     return [k, v.reduce((t, x) => t + ' <' + x + '>' ,'')]
                 // } else if (v.includes('http://')) {
@@ -405,7 +416,7 @@ export const useActiveraul = () => {
                     //     const first = v.pop()
                     //     constraint = `(${v.reduce((t, x) => `${t} ${x}`, v[0])})`
                     // }
-                    return `${total}\n\t\t${indent}sh:${k} ${k === 'message' ? '"' : ''}${['severity'].includes(k) ? 'sh:' + c : (['in'].includes(k) ? '(' + c + ')' : (['path', 'class', 'node'].includes(k) ? '<' + c + '>' : (['minCount', 'maxCount'].includes(k) ? c : "'" + c + "'")))}${k === 'message' ? '"' : ''} ;`
+                    return `${total}\n\t\t${indent}sh:${k} ${k === 'message' ? '"' : ''}${['severity'].includes(k) ? 'sh:' + c : (['in'].includes(k) ? '(' + _.cloneDeep(c).reduce((t,x) => t + '\n\t\t\t' + (x.includes('http') ? '<' + x + '>' : x), '') + '\n\t\t)' : (['path', 'class', 'node', 'datatype', 'nodeKind'].includes(k) ? '<' + c + '>' : ([].includes(k) ? c : "'" + c + "'")))}${k === 'message' ? '"' : ''} ;`
                 }, ``)
             return `\n\t${indent}sh:property [${body}${children}\n\t${indent}] ;`
         } catch {
@@ -430,7 +441,8 @@ export const useActiveraul = () => {
         redoForm,
         cancelLoad,
         addOptionFlexible,
-        getShaclText
+        getShaclText,
+        submitAll
     }
 }
 

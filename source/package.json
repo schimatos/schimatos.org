@@ -9,7 +9,7 @@
     "client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
     "server": "nodemon src/server/index.js",
     "test": "jest --watchAll",
-    "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run test\""
+    "dev": "concurrently \"npm run client\""
   },
   "jest": {},
   "author": "Jesse Wright",
@@ -59,6 +59,7 @@
     "tls": "0.0.1",
     "turtle-language-server": "^3.0.1",
     "underscore": "^1.9.1",
+    "webpack-war-plugin": "^1.0.0-beta.3",
     "www-authenticate": "^0.6.2",
     "xregexp": "^4.2.4",
     "yup": "^0.28.0"

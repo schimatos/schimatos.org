@@ -12,25 +12,25 @@ export default ({TargetsContext : [targets,dispatch], ActiveraulContext : [{prop
     const {propertyTypes, typeConstraints} = targets
     const tContext = targets
 
-    console.log('at make validators', properties, propertyList)
+    //console.log('at make validators', properties, propertyList)
 
-    //console.log('make validators effect called')
+    ////console.log('make validators effect called')
 
     const makeValidator = prop => {
 
         const getAllConstraints = constraints => {
-            //console.log('get all constraints', constraints)
+            ////console.log('get all constraints', constraints)
             const minimizedConstraints = removeDuplicates(constraints)
-            //console.log('minimized contraints', minimizedConstraints)
+            ////console.log('minimized contraints', minimizedConstraints)
 
             const newConstraints = minimizedConstraints.map(x => typeConstraints[x]?.datatype).filter(x => x!=undefined)
-            //console.log('new contraints', constraints)
+            ////console.log('new contraints', constraints)
 
             if (setMinus(newConstraints, minimizedConstraints).length > 0) {
-                //console.log('if', constraints)
+                ////console.log('if', constraints)
                 return getAllConstraints([...newConstraints, ...minimizedConstraints])
             } else {
-                //console.log('else', minimizedConstraints)
+                ////console.log('else', minimizedConstraints)
                 return [...minimizedConstraints]
             }
         }
@@ -39,11 +39,11 @@ export default ({TargetsContext : [targets,dispatch], ActiveraulContext : [{prop
 
         const predicate = getPredicate(prop, property)
 
-        //console.log('predicate', predicate)
+        ////console.log('predicate', predicate)
 
         const {fromRange, fromOptions} = (predicate !== true && propertyTypes[predicate] !== undefined && use_type_constraints) ? propertyTypes[predicate] : {}
 
-        //console.log('fromRange', fromRange, 'fromObjects', fromOptions, propertyTypes, propertyTypes[predicate])
+        ////console.log('fromRange', fromRange, 'fromObjects', fromOptions, propertyTypes, propertyTypes[predicate])
 
         const rangeConstraints = (always_apply_range_constraints && fromRange !== undefined) ? fromRange : []
         const useObjects = (((fromRange === undefined || fromRange.length === 0) && use_object_types_if_no_type_specified) || always_use_object_types) && use_type_constraints
@@ -51,36 +51,36 @@ export default ({TargetsContext : [targets,dispatch], ActiveraulContext : [{prop
         // Last term in brackets below ensures IRI constraint on inverse path
         const typesToConstrain = getAllConstraints([...rangeConstraints, ...objectConstraints, ...(predicate === true ? ['http://www.w3.org/2001/XMLSchema#anyURI'] : [])])
         
-        //console.log('types to constrain', typesToConstrain)
+        ////console.log('types to constrain', typesToConstrain)
         const typeConstriantList = typesToConstrain.map(type => ({...typeConstraints[type], type}))
         // ned to convert datatype to type
 
 
 
 
-        //console.log('types to constraint', typeConstriantList, typeConstraints, typeConstraints['http://example.org/name'])
+        ////console.log('types to constraint', typeConstriantList, typeConstraints, typeConstraints['http://example.org/name'])
 
         const allConstraints = [property, ...typeConstriantList]
 
-        //console.log('all constraints', allConstraints)
+        ////console.log('all constraints', allConstraints)
 
         const merged = mergeConstraints(allConstraints)
 
-        //console.log('merged constraints', merged)
+        ////console.log('merged constraints', merged)
 
         const [validator, details] = constraintsToValidator(merged)
 
-        //console.log('constraints after constraints to validator', validator, details)
+        ////console.log('constraints after constraints to validator', validator, details)
 
         return [validator, {...details, path : property.path, pathType : property.pathType}]
     }
 
     const validatorDict = dictMap(properties, ([k, v]) => ([k, makeValidator(v)]))
 
-    //console.log('validator dict', validatorDict)
+    ////console.log('validator dict', validatorDict)
 
     const makeField = (id, [validators, details], targets, options) => {
-        //console.log('make field details', 'id', id, 'validators', validators, 'details', details, 'targets', targets, 'options', options)
+        ////console.log('make field details', 'id', id, 'validators', validators, 'details', details, 'targets', targets, 'options', options)
         const detailList = Object.keys(details)
         const types = details.types
 
@@ -97,7 +97,7 @@ export default ({TargetsContext : [targets,dispatch], ActiveraulContext : [{prop
 
 
 const fieldType = (details, detailList, types) => {
-    //console.log('details', details)
+    ////console.log('details', details)
     if (detailList.includes('in')) {
         return details['in'].length <= 5 ? Form.Select : Form.Dropdown
     } else if (detailList.includes('pattern')) {
@@ -131,7 +131,7 @@ const makeProp = (id, details, targets, additionalOptions, properties, validator
     
 
     const dropdownOptions = details['in'] ? setMinus(details['in'], takenOptions) : {...options, ...additionalOptions}
-    //console.log('details before', details)
+    ////console.log('details before', details)
     return {...details ,validators : duplicateCheckValidation(validators, takenOptions ? takenOptions.map(x => x.value) : [])}
 }
 
@@ -150,7 +150,7 @@ const duplicateCheckValidation = (validators, selections) => {
 const getPredicate = (prop, property) => {
     // To finish properly. True indicates that the path is inverse and hence an IRI is required
     const x = property.path
-    //console.log('get predicate', property)
+    ////console.log('get predicate', property)
     return {
         'path' : Array.isArray(x) ? x[x.length-1] : x,
         'inversePath' : true,
@@ -161,7 +161,7 @@ export const mergeConstraints = constraints => {
     return constraints.reduce((validator, constraint) => {
         const updatedConstraint = keyDelDict(dictMap(constraint, ([k, v]) => [k, k==='pattern' ? {pattern : v, flags : constraint.flags ? constraint.flags : ''} : v]), 'flags')
 
-        //console.log('updated constraint', updatedConstraint)
+        ////console.log('updated constraint', updatedConstraint)
 
         const lowerBounds = ['minLength', 'minExclusive', 'minInclusive']
         const upperBounds = ['maxLength', 'maxnExclusive', 'maxInclusive']
@@ -199,7 +199,7 @@ export const mergeConstraints = constraints => {
 
 export const constraintsToValidator = constraints => {
 
-    console.log('constraints at constraints to validator', constraints)
+    //console.log('constraints at constraints to validator', constraints)
 
     const isNumeric = intersection(Object.keys(constraints), ['maxInclusive', 'minExclusive', 'minInclusive', 'maxInclusive']).length > 0 || constraints.isNumeric
     const isString = intersection(Object.keys(constraints), ['pattern', 'languageIn', 'uniqueLang', 'maxLength', 'minLength']).length > 0 || constraints.isString
@@ -227,7 +227,7 @@ export const constraintsToValidator = constraints => {
     }
 
 
-    //console.log('after', constraints)
+    ////console.log('after', constraints)
 
     const numericRequirement = req => v => {
         return (isNaN(Number(v)) ? `entry should be a number` : req(v))
@@ -263,10 +263,10 @@ export const constraintsToValidator = constraints => {
             const formsPattern = constraint[0]
             const functionPatterns = constraint.slice(1)
             const newValidators = extendDict(validators, {pattern : { value : makeDictRegexp(formsPattern), message : `should match pattern ${stringDictRegexp(formsPattern)}`}})
-            //console.log('new Validators',newValidators)
+            ////console.log('new Validators',newValidators)
             // Do not think these are working correctly
             const out = [functionPatterns.reduce((total, pattern, i) => ({...total, validate : extendDict(total.validate, { ['pattern'+i] : validationFuncMapping('additionalPattern', pattern)})}), newValidators), {...details, pattern : formsPattern}]
-            //console.log('output of pattern special case', out)
+            ////console.log('output of pattern special case', out)
             return out
         }
         
@@ -325,7 +325,7 @@ export const constraintsToValidator = constraints => {
         }
     }, [{required : {value : true, message : 'Required'}}, {}])
 
-    //console.log('reduced constraint', reduced)
+    ////console.log('reduced constraint', reduced)
 
     return reduced
 

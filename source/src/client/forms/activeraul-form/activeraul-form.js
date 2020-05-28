@@ -65,14 +65,9 @@ import {onFormLoad} from '../../effects'
 
 export default () => {
     const IField = IRIField('knowledge')
-    console.log(IField)
-    //const IField = (p) => <IFie {...{...p, onChange : console.log, onSubmit : console.log}}/>
 
-
-    console.log('activerual form before form load')
    onFormLoad()
-   console.log('activeraul form after form laod')
-   console.log('actual activeraul context', keepCloning(useContext(ActiveraulContext)[0]))
+
    const [,hDisp] = useContext(HistoryContext)
 
    const [a,activeraulDispatch] = useContext(ActiveraulContext)
@@ -80,7 +75,7 @@ export default () => {
    const h = hist.length > 0 ? hist.slice(-1) : hist
 
    setTimeout(() => {
-       console.log('h value', h, a, hash(h[0]), hash(a))
+     
     !eqHash(h[0], a) && hist.length > 3 && hDisp({type : 'REFRESH_STATE', activeraulDispatch})
    }, 1000)
 
@@ -88,18 +83,16 @@ export default () => {
 
     const [state, dispatch] = Activeraul()
     const {focus, propertyList, properties} = state
-    const {addOption, addOptionOnly, remove, cancelLoad} = useActiveraul()
+    const {addOption, addOptionOnly, remove, cancelLoad, submitAll} = useActiveraul()
     const [targets,] = useContext(TargetsContext)
     const [{startPoint},] = useContext(LayoutContext)
     const {displayIRI, displayIRIMulti, makeIRI} = Conversions(0)
     //const {fetchData, updateFields} = customEffects()
     const [{advanced_features, schema_prefixes},] = useContext(TriplestoreContext)
-    console.log('advanced features', advanced_features)
-    const {display_path_instead_of_name} = advanced_features
-    //const dButtonPopup = dynamicButtonPopup(dispatch)
-    console.log('targets', targets)
+    const [{typeConstraints},] = useContext(TargetsContext)
 
-    console.log('state at start of activeraul form', state, keepCloning(state), targets)
+    const {display_path_instead_of_name} = advanced_features
+
 
 
 
@@ -121,7 +114,7 @@ export default () => {
         const {property, loading, hidden} = properties[id]
         const {path, pathType, severity, maxCount, message, minCount, name, description, class:cl,in:ins} = propertyList[property]
         const displayProperties = Object.keys(propertyList[property]).filter(x => !['path', 'pathType', 'message', 'severity'].includes(x))
-        console.log('children', children, pathOpen, path)
+
         children = pathType === 'alternativePath' ? [...children[0], ...children[pathOpen]] : children
         const targetsNo = children.length
         const atMax = maxCount && (maxCount <= targetsNo)
@@ -210,22 +203,22 @@ export default () => {
         const [options, childOptions] = targets.property[id].options.reduce(([o, c], opt) => childValues.includes(opt.value) ? [o, [...c, opt]] : [[...o, opt], c], [[],[]])
         const childOptionsDict = Object.fromEntries(childOptions.map(x => [x.value, x]))
         const TargetDropdown = (i, value, c) => {
-            console.log('at dropdown generate')
+            //console.log('at dropdown generate')
             const currentOpt = (value === '' || !childOptionsDict[value]) ? {text:'',key:'',value:''} : childOptionsDict[value]
             const opts = value !== '' ? [...options, currentOpt] : options
-            const {field, check} = targets.renderedValidators[id] ? targets.renderedValidators[id]({value, onSubmit : (v, t) => console.log(v, t)//addOption(i, id, v, t)
+            const {field, check} = targets.renderedValidators[id] ? targets.renderedValidators[id]({value, onSubmit : (v) => addOption(i, id, v, undefined)
                 , name : `${i}`, options : opts, makeIRI, displayIRI}) : {field : <div></div>, check : false}
             //const Field = field
             // need to update shape
-            console.log(value, optionsFromArray(ins||[]))
-            console.log(propertyList[property].nodeKind ,propertyList[property].nodeKind && propertyList[property].nodeKind.includes('IRI') ,propertyList[property].nodeKind && !propertyList[property].nodeKind.includes('Or'))
+            //console.log(value, optionsFromArray(ins||[]))
+            //console.log(propertyList[property].nodeKind ,propertyList[property].nodeKind && propertyList[property].nodeKind.includes('IRI') ,propertyList[property].nodeKind && !propertyList[property].nodeKind.includes('Or'))
             return (
                 <div onClick={() => dispatch({type : 'SET_FOCUS', t : 'targets', i, noHold : true, startPoint})}>
-              <Input key={'input'+i} type='text' action fluid style={{padding : '0px', margin : '0px', width : '100%'}} >
-                {!ins ? !(!!propertyList[property].nodeKind && propertyList[property].nodeKind.includes('IRI') && !propertyList[property].nodeKind.includes('Or')) &&!propertyList[property].pattern && field : <Select onChange={(v, {value}) => addOption(i, id, value, undefined)} value={value||ins?.[0]} options={optionsFromArray(ins||[])} fluid/>}
-                {propertyList[property].pattern && [<MultiWordField {...{...propertyList[property], value, onSubmit : (v) => addOption(i, id, v, undefined), pattern : propertyList[property].pattern}}/>, value && 'Currently Submitted: ' + value]}
-                {(!!propertyList[property].nodeKind && propertyList[property].nodeKind.includes('IRI') && !propertyList[property].nodeKind.includes('Or')) && [<IField value={value} onChange={(t, {value})=> addOption(i, id, value, undefined)} onSubmit={console.log}/>]}
-
+              <Input onSubmit={console.log} type='text' action fluid style={{padding : '0px', margin : '0px', width : '100%'}} >
+                {!ins ? !(!!propertyList[property].nodeKind && propertyList[property].nodeKind.includes('IRI') && !propertyList[property].nodeKind.includes('Or')) &&!(propertyList[property].pattern || typeConstraints[propertyList[property].datatype]?.pattern) && field : <Select key='selfield' onChange={(v, {value}) => addOption(i, id, value, undefined)} value={value||ins?.[0]} options={optionsFromArray(ins||[])} fluid/>}
+                {(propertyList[property].pattern || typeConstraints[propertyList[property].datatype]?.pattern) && [<MultiWordField key='multiword' {...{...propertyList[property], value, onSubmit : (v) => addOption(i, id, v, undefined), pattern : '/'+(propertyList[property].pattern||typeConstraints[propertyList[property].datatype]?.pattern)+'/'
+                }}/>, value && 'Currently Submitted: ' + value]}
+                {(!!propertyList[property].nodeKind && propertyList[property].nodeKind.includes('IRI') && !propertyList[property].nodeKind.includes('Or')) && [<IField key='ifielf' value={value} onChange={(t, {value})=> addOption(i, id, value, undefined)} onSubmit={console.log}/>]}
                 </Input>
                 {/* {value} */}
                 {/* The below field is depricated and simply displays the input in the background state of activeraul at a given time. Do not use it to make inputs as it does not perform validations.
@@ -292,7 +285,7 @@ export default () => {
         }
     
     const nextRender = (type, oldDetails, length) => (id, index) => {
-        console.log('next render', type, oldDetails)
+
             const det = state[type][id]
             const {header, children, color, content, bottom, ...details} = (type === 'targets' ? TargetSegment : PropertySegment)({...det, id, ...oldDetails})
             return anySegment({...det, header, children, id, bottom, type, color, content, details, isFirst : index ===0, isLast : index === length-1 })
@@ -352,7 +345,7 @@ export default () => {
                     </Segment>
                 )
             }
-            return nextRender(startPoint.type)(startPoint.id)
+            return [nextRender(startPoint.type)(startPoint.id), <div style={{paddingTop : '5px', textAlign : 'right'}}><Button onClick={submitAll}>Submit</Button></div>]
         }
 
 

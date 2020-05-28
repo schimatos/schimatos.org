@@ -4,13 +4,13 @@ import {nextKey, keepCloning, filterDict, toEntries} from '../../../../utils'
 
 export default ({state, newProperties, id}) => {
 
-    console.log(state, keepCloning(newProperties), id)
+    // //console.log(state, keepCloning(newProperties), id)
 
 
     const addProperties = (state, properties, id_no, idsCreated) => {
 
         
-        console.log('state at start', keepCloning(state), keepCloning(properties))
+        //console.log('state at start', keepCloning(state), keepCloning(properties))
 
 
 
@@ -52,7 +52,7 @@ export default ({state, newProperties, id}) => {
 
 
         const [pList, ps, ts,,npkey,,e] = properties.reduce(([o, ps, ts, key, key1, key2, extraProperties], x) => {
-            console.log(x, ts, id_no)
+            // //console.log(x, ts, id_no)
             
             const childs = ts[id_no].children
     
@@ -71,7 +71,7 @@ export default ({state, newProperties, id}) => {
                 //Dealing with sub properties
                 const extras = x.property ? toEntries(keepCloning(x.property)).map(x => [existing, x]) : []
                 delete x.property
-                //console.log('extras', extras, extraProperties)
+                ////console.log('extras', extras, extraProperties)
 
 
                 const k = ps[existing].property
@@ -105,7 +105,7 @@ export default ({state, newProperties, id}) => {
                                     //Dealing with sub properties
                                     const extras = x.property ? toEntries(keepCloning(x.property)).map(x => [key1, x]) : []
                                     delete x.property
-                //console.log('extras', extras, extraProperties)
+                ////console.log('extras', extras, extraProperties)
 
 
 
@@ -117,11 +117,11 @@ export default ({state, newProperties, id}) => {
             }
         }, [keepCloning(state.propertyList), keepCloning(state.properties), keepCloning(state.targets), plistKey, pkey, tkey, []])
         //state.propertyList = pList
-        console.log('plist', pList)
+        //console.log('plist', pList)
         state.propertyList = pList
         
         // Object.fromEntries(Object.entries(pList).map(([n, x]) => {
-        //     console.log('making property list details' ,n, x)
+        //     //console.log('making property list details' ,n, x)
         //     if (x['path'] === "http://linked.data.gov.au/def/agrif#isAffectedBy") {
         //         //x.datatype = "http://www.w3.org/2001/XMLSchema#anyURI"
         //         return [n, {...x, datatype : "<http://www.w3.org/2001/XMLSchema#anyURI>", type : "anyURI"}]
@@ -138,45 +138,45 @@ export default ({state, newProperties, id}) => {
         //     state.targets[1].submitted = true
         // }
         const ids = _.range(pkey,npkey)
-        //console.log(state.targets, id, ids)
+        ////console.log(state.targets, id, ids)
         //state.targets[id].children = [...state.targets[id].children, ...ids]
 
         // Double check this
         // Most likely will need to do it for *all*
-        console.log(e)
-        //console.log('state at end', keepCloning(state))
+        //console.log(e)
+        ////console.log('state at end', keepCloning(state))
         const outSide = keepCloning(e.reduce(([t, newIds], [propId, property]) => {
-            console.log('inside extra propertyy reducer', t, propId, property)
+            //console.log('inside extra propertyy reducer', t, propId, property)
             const childNo = t.properties[propId].children[0]
             // t.targets[childNo].children = [...t.targets[childNo].children, childNo]
             const additions = keepCloning(addProperties(keepCloning(t), [property] ,childNo, newIds))
-            //console.log('before addition', [t, newIds])
-            //console.log('after addition', additions)
-            console.log('additions', additions)
+            ////console.log('before addition', [t, newIds])
+            ////console.log('after addition', additions)
+            //console.log('additions', additions)
 
             return additions
         }, [keepCloning(state), [...idsCreated, ...ids]]))
 
-        console.log('after reducer', outSide)
+        //console.log('after reducer', outSide)
         return outSide
 
-        //console.log(newIds, ids)
+        ////console.log(newIds, ids)
 
-        //console.log('outside reducer', keepCloning([newState2, [...newIds, ...ids]]))
+        ////console.log('outside reducer', keepCloning([newState2, [...newIds, ...ids]]))
 
         //return //keepCloning([newState2, [...newIds, ...ids]])
     }
 
     const [newState, allIds] = keepCloning(addProperties(state, keepCloning((newProperties[0] && newProperties[0].constraints) || newProperties.constraints || []), id, []))
 
-    console.log(keepCloning(newState), keepCloning(allIds))
+    //console.log(keepCloning(newState), keepCloning(allIds))
 
 
     newState.groups = keepCloning({...state.groups, ...newProperties.groups})
 
-   // console.log('outside', keepCloning(newState), keepCloning(allIds))
+   // //console.log('outside', keepCloning(newState), keepCloning(allIds))
 
-   console.log(newState, keepCloning(newState))
+   //console.log(newState, keepCloning(newState))
 
 
     return {newState : keepCloning(newState), ids : allIds}

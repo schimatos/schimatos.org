@@ -6,7 +6,7 @@ export const PropFieldForm = ({Field, props, ...p}) => {
     const NewField = extraProps => {
         const ppty = props
         const allProps = {...ppty, ...extraProps}
-        console.log("all props and new field", allProps)
+        //console.log("all props and new field", allProps)
         return Field
         return () => <Input />
         return <Field {...allProps} />
@@ -16,7 +16,7 @@ export const PropFieldForm = ({Field, props, ...p}) => {
 }
 
 const DefaultedForm = ({Field, name, onSubmit, validators, value, p}) => {
-    console.log('inside defaulted from')
+    //console.log('inside defaulted from')
     const { handleSubmit, register, errors, setValue, triggerValidation, getValues } = useForm()
     const [validating, setValidating] = useState(false)
     const [defaultValue, setDefaultValue] = useState(value)
@@ -74,17 +74,17 @@ const DefaultedForm = ({Field, name, onSubmit, validators, value, p}) => {
         onKeyPress : e => e.key === 'Enter' && submit() 
     }
 
-    console.log('details', Field, Form.Input)
+    //console.log('details', Field, Form.Input)
 
     return <ValidationForm error={errors[name]} validating={validating} onSubmit={onSubmitCustom} Field={<Form  style={{width : '100%'}} onSubmit={onSubmit}><Form.Input/><Input /><Field/><Field {...props} /></Form>}/>
 }
 
 export const ValidationForm = ({ onSubmit, error, validating, Field, errors }) => {
-    console.log('inside validation form')
+    //console.log('inside validation form')
     return <PopupError Field={Field} error={error} validating={validating} errors={errors} />;
 };
 const PopupError = ({ Field, error, validating }) => {
-    console.log('inside popup error')
+    //console.log('inside popup error')
     //return <Field />
     return <Popup position={'top center'} trigger={Field} content={validating || error ? ({ content: (validating ? 'validating...' : error.message), pointing: 'below' }) : false} disabled={validating || error ? false : true} on={['focus', 'hover']} />;
 };

@@ -1,7 +1,7 @@
 import toggle from './toggle'
 
 export default (state, action) => {
-    //console.log('layout reducer', state, action)
+    ////console.log('layout reducer', state, action)
     const {type, panel, layout, startPoint} = action
     switch (type) {
         case 'COMPLETE_UPDATE' :

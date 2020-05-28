@@ -8,7 +8,7 @@ import help from './tabs/help'
 import log from './tabs/log-in'
 
 export default () => {
-    console.log('at index in main menu')
+    //console.log('at index in main menu')
     const [{warnings, info, selectionsSidebar, creationSidebar}, dispatch] = useContext(LayoutContext)
        
 

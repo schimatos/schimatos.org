@@ -21,7 +21,7 @@ import { keepCloning } from '../../../utils'
 //import {displayComponent} from '../../../custom-hooks'
 
 export default (state, action) => {
-    //console.log('activeraul reducer', state, action)
+    ////console.log('activeraul reducer', state, action)
     const  {type, t, id, i, value, loading, targets, no, ttype, prefix, hide, historyDispatch, noHold, startPoint} = action
     //action = {...action, display}
     const newState = {
@@ -47,10 +47,10 @@ export default (state, action) => {
         'CHANGE_ALTERNATE_PATH' : () => changeAlternatePath(state, action),
         'UPDATE_TARGETS' : () => updateTargets(state, action)
     }[type]()
-    console.log('inside activeraul reducer', keepCloning(state), keepCloning(action), keepCloning(newState))
-    //console.log('after before hist', newState, newState.focus, historyDispatch)
+    // //console.log('inside activeraul reducer', keepCloning(state), keepCloning(action), keepCloning(newState))
+    ////console.log('after before hist', newState, newState.focus, historyDispatch)
     if (type !== 'COMPLETE_UPDATE') {historyDispatch({type : 'FORM_CHANGE', newState})}
-    //console.log('after reducer', newState, newState.focus)
+    ////console.log('after reducer', newState, newState.focus)
 
     return keepCloning({...newState})
 }

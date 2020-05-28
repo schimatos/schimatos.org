@@ -31,7 +31,7 @@ export default () => {
             !hasDuplicates(other.map(x => x[0]))
         ]}
         const submitConditions = () => []
-        console.log('new path modal')
+        //console.log('new path modal')
         
         const content = ({pathType, path}) => [
             ['Path Name', [PathField//multiOrSingleInput

@@ -4,7 +4,7 @@ import {TriplestoreContext} from '../../context'
 import {strip} from '../../utils'
 
 export default graph => {
-	//console.log('at conversions')
+	////console.log('at conversions')
 	const [{
 		settings,
 		knowledge_graphs,

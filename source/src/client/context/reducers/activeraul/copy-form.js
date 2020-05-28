@@ -43,7 +43,7 @@ export default (state, {idn, dispatch}) => {
             properties : {...currentState.properties, [newId] : {...newProp}}
         }
 
-        //console.log('mapping', mapping, newChildren)
+        ////console.log('mapping', mapping, newChildren)
 
         return mapping.reduce((total, x) => copyTarget(total, newId, x), newState)
     }
@@ -55,7 +55,7 @@ export default (state, {idn, dispatch}) => {
 
     dispatch({type : 'ADD_NEW', requested : false, loading : false, ids : setMinus(Object.keys(state.properties), Object.keys(newState.properties)), category : 'property'})
 
-    //console.log('newState', newState)
+    ////console.log('newState', newState)
     
     return newState
 }

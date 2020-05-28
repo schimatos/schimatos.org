@@ -32,7 +32,7 @@ export default ({submit, open, close, initialState, content, header, conditions,
             const fcondition = () => (field.length > 4 && ((field[4].advanced ===true && !advancedOptions) || !(field[4].condition ? field[4].condition(state) : true)))
             const notInput = (typeof(field) === 'string' || (isDict(field) && field.type))
             if (noPath() || fcondition()) {return total}
-            console.log('field',field)
+            //console.log('field',field)
             return [...total,
                 <>
                 {notInput ? field : field.length > 3 && field[3]}

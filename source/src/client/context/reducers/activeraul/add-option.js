@@ -2,7 +2,7 @@ import {deepNotIn, strip, keepCloning} from '../../../utils'
 import relations from './helper-functions/relations'
 
 export default (state, targets, i, value, prefix, hide) => {
-    //console.log('add option', i)
+    ////console.log('add option', i)
     const {siblingValues} = relations(state)
     // FIx strip
     const entry = {key : value, text : hide ? strip(value, prefix) : value, value : value}
@@ -16,7 +16,7 @@ export default (state, targets, i, value, prefix, hide) => {
         const noSiblings = deepNotIn(siblingValues(i), value)
 
         if (noSiblings) {
-            //console.log('adding value')
+            ////console.log('adding value')
             state.targets[i].value = value
         }
     } else {

@@ -1,5 +1,5 @@
 export default (state, action) => {
-    //console.log('triplestore reducer', state, action)
+    ////console.log('triplestore reducer', state, action)
     const {type, triplestore} = action
     switch (type) {
         case 'COMPLETE_UPDATE' :

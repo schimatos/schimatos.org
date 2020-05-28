@@ -64,10 +64,10 @@ export default (details) => {
         Form.Input
     ]
 
-    console.log('premade props at validator field', details)
+    //console.log('premade props at validator field', details)
 
     const simplfiedTypes = (details.types ? details.types : []).reduce((total, type) => {
-        console.log('simplgied types', total, type)
+        //console.log('simplgied types', total, type)
         if (Object.keys(mapping).includes(type)) {
             return [...total, mapping[type]]
         } else {
@@ -76,7 +76,7 @@ export default (details) => {
     }, [])
 
     const optimalType = typeDisplayPriorityList.reduce((total, type) => {
-        console.log('optimal type', total, type, simplfiedTypes)
+        //console.log('optimal type', total, type, simplfiedTypes)
         if (total || !simplfiedTypes.includes(type)) {
             return total
         } else {
@@ -88,7 +88,7 @@ export default (details) => {
 
     const Field = fieldMapping[typeToUse]
 
-    console.log('type to use', typeToUse, Field)
+    //console.log('type to use', typeToUse, Field)
 
     const getField = (type, details) => {
         if (Object.keys(details).includes('pattern')) {
@@ -113,15 +113,15 @@ export default (details) => {
     const FieldRenderer = [Form.Input, Form.Dropdown, Form.Select, Form.TextArea, Form.Field, Form.Button, Form.Radio, Form.Checkbox].includes(Field) ? NormalField : Field
     const fluid = [Form.Input, Form.Dropdown, Form.Select, Form.TextArea, Form.Field].includes(Field)
 
-    return ({value, onSubmit, name, options, makeIRI, displayIRI}) => {
-        console.log('displayIRI', displayIRI, makeIRI)
-        console.log('optimal type', optimalType, simplfiedTypes)
+    return ({value, onSubmit, name='fooName', options, makeIRI, displayIRI}) => {
+        //console.log('displayIRI', displayIRI, makeIRI)
+        //console.log('optimal type', optimalType, simplfiedTypes)
         const props = {type : typeToUse, value : details.types && details.types.includes('anyURI') ? displayIRI(value) : value, onSubmit : v => onSubmit(v, details.types), fluid, Field, name, fieldSpecificOptions : options, ...details}
         return {field : <FieldRenderer {...props} />, check : <CheckSubmitted {...props}/>}
     }
 }
 
-const CheckSubmitted = ({value, name, validators}) => {
+const CheckSubmitted = ({value, name='fooName', validators}) => {
     const { handleSubmit, register, errors, setValue, triggerValidation } = useForm()
        
     const [isValidating, setValidating] = useState(false)
@@ -186,10 +186,10 @@ const NormalField = ({value, onSubmit, validators, options, type, fluid, name, F
     const [defaultValue, setDefaultValue] = useState(value)
 
     
-    console.log('inside normal field', value, options, Field)
+    //console.log('inside normal field', value, options, Field)
 
     const triggerValidationCustom = async (e, {value}) => {
-        console.log('at trigger validation', name, value, e.target.value, e, e.target.option)
+        //console.log('at trigger validation', name, value, e.target.value, e, e.target.option)
         setValue(name, value || e.target.value)
         setValidating(true)
         await triggerValidation({name}).then(setValidating(false))
@@ -197,12 +197,12 @@ const NormalField = ({value, onSubmit, validators, options, type, fluid, name, F
 
     const submit = async e => {
         setDefaultValue(getValues()[name])
-        console.log('default value', defaultValue, getValues()[name])
+        //console.log('default value', defaultValue, getValues()[name])
         triggerValidation({name})
-        console.log('after trigger validation')
+        //console.log('after trigger validation')
         //handleSubmit(v => v[name] !== value && onSubmit(v[name]))
         handleSubmit(v => { 
-            console.log('inside handle submit', v, name, onSubmit)
+            //console.log('inside handle submit', v, name, onSubmit)
             v[name] !== value && onSubmit(v[name])
         })()
         
@@ -231,7 +231,7 @@ const NormalField = ({value, onSubmit, validators, options, type, fluid, name, F
         onBlur : () => submit(),
         //onKeyPress : e => e.key === 'Enter' && submit(),
         onChange : async (e, {value}) => {
-            console.log('on change triggered', e, value)
+            //console.log('on change triggered', e, value)
             if (!changeRestrictions || changeRestrictions(value)) {
                 setValue(name, value || e.target.value)
                 await triggerValidation({name})
@@ -239,7 +239,7 @@ const NormalField = ({value, onSubmit, validators, options, type, fluid, name, F
         }
     }
 
-    console.log('options details', fieldSpecificOptions, value)
+    //console.log('options details', fieldSpecificOptions, value)
 
     const dropdownProps = {
         options : fieldSpecificOptions,
@@ -248,8 +248,8 @@ const NormalField = ({value, onSubmit, validators, options, type, fluid, name, F
         //key : defaultValue,
         onKeyPress : e => {
             if (e.key === 'Enter') {
-                console.log(e)
-                console.log('on enter press', e.target.value)
+                //console.log(e)
+                //console.log('on enter press', e.target.value)
                 submit()
                 //setValue(name, e.target.value)
                 //handleSubmit(v => v[name] !== value && onSubmit(v[name]))
@@ -265,7 +265,7 @@ const NormalField = ({value, onSubmit, validators, options, type, fluid, name, F
 
     const props = extendDict(baseprops, Field === Form.Dropdown ? dropdownProps : {defaultValue, onKeyPress : e => e.key === 'Enter' && submit()})
 
-    console.log('props', props)
+    //console.log('props', props)
 
 return <Popup style={{width : '100%'}} position={'top center'} trigger={<Form style={{width : '100%'}} onSubmit={submit}><Field {...props}/></Form>} content={isValidating || errors[name] ? ({content : (isValidating ? 'validating...' : errors[name].message), pointing : 'below'}) : false} disabled={isValidating || errors[name] ? false : true} on={['focus', 'hover']}/>
 }
