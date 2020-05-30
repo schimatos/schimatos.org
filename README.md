@@ -22,7 +22,7 @@ To perform data entry on the entity open the sidebar and use the dropdown in the
 
 Now use the dropdown in the sidebar header to navigate to `SHACL Selections` and search for the 'wikidataHumanShapeDemo'; as the label is "Wikidata human shape demo" simply searching for 'human' will return it as a result. Select the shape and click the `Apply` button to generate the form.
 
-Any values that are already submitted will be prefilled into the form. Note that since multiple users can access the demo; this may either be empty, partially or fully complete depending on what others have submitted. If this is the case you can remove these entries from the database by selecting the `x` next to the entry. To create more fields in any section click the `+` button at the top right of the section.
+Any values that are already submitted will be prefilled into the form. Note that since multiple users can access the demo; this may either be empty, partially or fully complete depending on what others have submitted. If this is the case you can remove these entries from the database by selecting the `x` next to the entry. To create more fields in any section click the `+` button at the top right of the section. To ensure that values are validated and ready for submission, press `ENTER` after completing a field.
 
 To submit entries, click the `Submit` button at the bottom of the form. This will submit all entries that have passed validation.
 

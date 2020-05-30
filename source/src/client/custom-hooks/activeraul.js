@@ -149,7 +149,7 @@ export const useActiveraul = () => {
 
 
         console.log(node)
-        const shacls2 = shacls == [] && node ? {[settings.knowledge_graph] : [[node, true,true,true,true]]} : shacls
+        const shacls2 = (shacls.length == 0 && node) ? {[settings.shacl_graph] : [[node, true,true,true,true]]} : shacls
         console.log(node,  {getShacl:getShacl || !!node, targets, shacls: shacls2})
         endpoint({
             query, context : 'activeraul',
@@ -200,7 +200,8 @@ export const useActiveraul = () => {
 
     const submitAll = () => {
         Object.entries(state.targets).forEach(([k, x]) => {
-            !x.submitted && x.value !== '' && submission(false, {type : 'targets', id : k})
+            console.log(k,x)
+            !x.submitted && x.value !== '' && submission(false, _.cloneDeep({type : 'targets', id : k}))
         })
     }
 

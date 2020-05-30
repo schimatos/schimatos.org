@@ -2,7 +2,7 @@
 	"SECRET_KEY" : "q21Fw6QOVxfpzVcOvT8ntJNvhuvuDlTOC4g1AO1T",
 	
 	"settings" : {
-		"knowledge_graph" : "wikidata-2020-05-26",
+		"knowledge_graph" : "wikidata",
 		"shacl_graph" : "ANU Shacl Store (unauthenticated)",
 		"type_graph" : "ANU Type Store (unauthenticated)",
 		"additional_shacls" : [],
@@ -43,8 +43,8 @@
 	},
 		
 	"knowledge_graphs" : {
-		"wikidata-2020-05-26" : {
-			"location" : "",
+		"wikidata" : {
+			"location" : "http://www.wikidata.org/",
 			"sparql_endpoint" : "http://rsmsrv01.nci.org.au:8080/fuseki/Wikidata",
 			"prefix" : "http://www.wikidata.org/entity/",
 			"triplestore" : "fuseki",

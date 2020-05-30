@@ -93,7 +93,7 @@ export default () => {
 
     const {display_path_instead_of_name} = advanced_features
 
-
+   console.log(state)
 
 
     // state.propertyList = {
