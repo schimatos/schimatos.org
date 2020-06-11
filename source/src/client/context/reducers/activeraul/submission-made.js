@@ -1,6 +1,6 @@
 export default (state, id, type, loading) => {
     state[type][id] = {...state[type][id],
-        submitted : true,
+        submitted : state[type][id].value !== '',//true,
         loading : loading === true
     }
 

@@ -124,7 +124,7 @@ export default ({opts}) => {
         reducer,
         selectVariable : 'target',
         standardQueries : ['Class', 'Objects Of', 'Subjects Of', 'Name', 'Label', 'Value', 'Any'],
-        initialState : {},
+        initialState : {searchText: 'sergio'},
         query : 'LIST_OPTIONS',
         disabled,
         optionsFilter,

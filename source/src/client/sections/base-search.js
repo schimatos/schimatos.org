@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useReducer, useEffect } from 'react';
 import { TriplestoreContext } from '../context';
 import { Form, TextArea, Button, Input, Select, Icon, Divider, Segment } from 'semantic-ui-react';
-import { optionsFromArray, advList } from '../utils';
+import { optionsFromArray, advList, hash } from '../utils';
 import setOptionsDropdown from '../forms/fields/set-options-dropdown';
 import undoableSection from '../forms/fields/undoable-section';
 import CancelableLoader from '../forms/fields/cancelable-loader';
@@ -12,6 +12,10 @@ export default ({ content, initialState, reducer, selectVariable, standardQuerie
     const KField = IRIField('knowledge')
     const SField = IRIField('shacl')
     
+    
+
+
+
     
     // fix conversionType spelling
     const [{ advanced_features },] = useContext(TriplestoreContext);
@@ -57,14 +61,14 @@ export default ({ content, initialState, reducer, selectVariable, standardQuerie
         }
     };
     const initialStateInternal = {
-        ...initialState,
         searchBy: 'Any',
         prevSearch: '',
         prevSearchBy: '',
         searchText: '',
         queryText: `SELECT DISTINCT ?${selectVariable}\nWHERE {?${selectVariable} ?p ?o}`,
         options: [],
-        loading: false
+        loading: false,
+        ...initialState
     };
     const contentInternal = ({ searchBy, loading, options, searchText, queryText, prevSearch, prevSearchBy, ...state }, dispatch, valDispatch) => {
         const eValDispatch = type => (e, { value }) => valDispatch(type)(value);
@@ -101,6 +105,34 @@ export default ({ content, initialState, reducer, selectVariable, standardQuerie
             }
         }
 
+        const [labels, addLabels] = useReducer((state, action) => {
+            const up = (_.cloneDeep({...state, ...action}))
+            console.log(up)
+            return up
+        }, {'':''})
+
+
+
+
+        // opts().forEach(IRI => {
+        //     console.log(IRI, opts())
+        //     triplestoreInterface({query : 'GET_LABEL', IRI : IRI?.key,
+        //     responseFunc: r => !Object.values(labels).includes(r) && addLabels({[IRI] : r})
+        //     })
+        // })
+
+        useEffect(() => {
+            triplestore({query : 'GET_LABELS', IRIS : _.difference(_.cloneDeep(opts().map(x => x.key || x.shacl)), _.cloneDeep(_.keys(labels))),
+            responseFunc: addLabels
+            })
+        }, hash(_.difference(_.cloneDeep(opts()), _.cloneDeep(_.keys(labels)))))
+
+        console.log('labels', labels, hash(_.difference(_.cloneDeep(o), _.cloneDeep(_.keys(labels)))))
+
+        const opts2 = () => opts().map(x => ({key : x.key, value : x.key, text : labels[x.key] || x.text}))
+
+        console.log(opts(), opts2())
+
         return (
         <Segment basic style={{margin : '0px', padding : '0px'}} disabled={disabled}>
         <Form>
@@ -113,7 +145,8 @@ export default ({ content, initialState, reducer, selectVariable, standardQuerie
             <Divider />
             {loading ? (<CancelableLoader onClick={valDispatch('SEARCH_ERROR')} />) : (opts().length === 0 ? ('No remaning options for this search.') : (setOptionsDropdown({
                 multiple: true,
-                options: opts(),
+                options: opts2(),//opts(),
+                customOptions : true,
                 sort: true,
                 placeholder,
                 value: [],

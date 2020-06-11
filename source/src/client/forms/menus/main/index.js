@@ -21,7 +21,7 @@ export default () => {
     }]
 
     const right = [help(), settings(), log(), {
-      image : '../public/favicon.ico',
+      image : '../schimatos/favicon.ico',
       popup : 'ANU Homepage',
       link : 'https://www.anu.edu.au/'
     }]    

@@ -14,6 +14,9 @@ import { datatypeFind } from './datatype-find'
 import { classFind } from './class-find'
 import conversions from '../custom-hooks/helper-functions/conversions'
 import targetDetails from './target-details.js'
+import getlabel from './get-label.js'
+import getlabels from './get-labels.js'
+
 
 export default () => {
     const [triplestore,] = useContext(TriplestoreContext)
@@ -37,7 +40,9 @@ export default () => {
                 'LOAD_TYPE_CONSTRAINTS' : loadTypeConstraints,
                 'DATATYPE_FIND' : datatypeFind,
                 'CLASS_FIND' : classFind,
-                'TARGET_DETAILS' : targetDetails
+                'TARGET_DETAILS' : targetDetails,
+                'GET_LABEL' : getlabel,
+                'GET_LABELS' : getlabels
             }[query](updatedProps)
 
             //console.log('response', await response)

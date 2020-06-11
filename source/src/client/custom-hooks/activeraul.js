@@ -199,6 +199,7 @@ export const useActiveraul = () => {
     }
 
     const submitAll = () => {
+        dispatch({type:'SUBMISSION_MADE', t : 'targets', id : 0})
         Object.entries(state.targets).forEach(([k, x]) => {
             console.log(k,x)
             !x.submitted && x.value !== '' && submission(false, _.cloneDeep({type : 'targets', id : k}))

@@ -29,7 +29,7 @@ const makeInput = ({inputs, ...props}) => {
 
 export default base_graph => {
     const {graphDetails, schema_prefixes} = useTriplestore()
-    const prefixes = {...schema_prefixes, '::other::' : ''}
+    const prefixes = {...schema_prefixes, 'prefix' : ''}
 
     const unpackSingle = iri => {
         

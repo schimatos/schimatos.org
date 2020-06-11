@@ -44,7 +44,7 @@
 		
 	"knowledge_graphs" : {
 		"wikidata" : {
-			"location" : "http://www.wikidata.org/",
+			"location" : "http://www.wikidata.org/Human-en-gb-Subset",
 			"sparql_endpoint" : "http://rsmsrv01.nci.org.au:8080/fuseki/Wikidata",
 			"prefix" : "http://www.wikidata.org/entity/",
 			"triplestore" : "fuseki",
@@ -62,14 +62,15 @@
 
 
 	"schema_prefixes" : {
-		"sh" : "http://www.w3.org/ns/shacl#",
-		"agrif" : "http://linked.data.gov.au/def/agrif#",
+		"ex" : "http://example.org/",
+		"wds" : "http://www.wikidata.org/entity/statement/",
 		"wd" : "http://www.wikidata.org/entity/",
 		"wdtn" : "http://www.wikidata.org/prop/direct-normalized/",
-		"p" : "http://www.wikidata.org/prop/direct/",
-		"wdt" : "http://www.wikidata.org/prop/",
+		"wdt" : "http://www.wikidata.org/prop/direct/",
+		"wdv" : "http://www.wikidata.org/value/",
+		"p" : "http://www.wikidata.org/prop/",
+		"sh" : "http://www.w3.org/ns/shacl#",
 		"orcid" : "https://orcid.org/",
-		"ex" : "http://example.org/",
 		"a":"http://www.w3.org/2005/Atom",
 		"address":"http://schemas.talis.com/2005/address/schema#",
 		"admin":"http://webns.net/mvcb/",

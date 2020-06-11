@@ -114,7 +114,7 @@ export default () => {
         const {property, loading, hidden} = properties[id]
         const {path, pathType, severity, maxCount, message, minCount, name, description, class:cl,in:ins} = propertyList[property]
         const displayProperties = Object.keys(propertyList[property]).filter(x => !['path', 'pathType', 'message', 'severity'].includes(x))
-
+        console.log(property)
         children = pathType === 'alternativePath' ? [...children[0], ...children[pathOpen]] : children
         const targetsNo = children.length
         const atMax = maxCount && (maxCount <= targetsNo)

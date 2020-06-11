@@ -95,7 +95,7 @@ export default ({opts}) => {
         reducer,
         selectVariable : 'shape',
         standardQueries : ['Class', 'Objects Of', 'Subjects Of', 'Name', 'Value', 'Label', 'Target', 'All', 'Any'],
-        initialState : {selectedShacls : [...(selections[id] ? selections[id] : [])]},
+        initialState : {selectedShacls : [...(selections[id] ? selections[id] : [])], searchText: 'human'},
         query : 'LIST_SHACLS', content, responseConversion, convertionType : 'reduce', optionsFilter, opts,
         placeholder : 'Select shacls to apply...'
     })
