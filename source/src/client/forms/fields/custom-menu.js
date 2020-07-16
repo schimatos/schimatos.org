@@ -1,6 +1,7 @@
-import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 import {Icon, Menu, Popup, Confirm, Segment} from 'semantic-ui-react'
 import FieldModal from './field-modal'
+import { useJourney } from 'react-journey'
 
 export default ({className, fixed, warnings, popups, icons}) => {
     //console.log('at custom menu')
@@ -45,12 +46,29 @@ export default ({className, fixed, warnings, popups, icons}) => {
         setModal(false)
     }
 
-    const menu = (
-        <Menu className={className} attached={fixed} style={{margin : '0px', backgroundColor : 'black', borderColor : 'black', borderRadius : '0px'}}>
-            {processedIconsLeft.length > 0 && <Menu.Menu position='left'>{processedIconsLeft.map(menuItem('left'))}</Menu.Menu>}
-            {processedIconsRight.length > 0 && <Menu.Menu position='right'>{processedIconsRight.map(menuItem('right'))}</Menu.Menu>}
-        </Menu>
-    )
+    let menu = null
+
+    if (fixed === 'top') {
+        // const { useStep } = useJourney();
+        // const el = useRef(null);
+        // useStep(el, 'Use this to toggle the search and editing sidebar');
+    
+        menu = (
+            <Menu className={className} attached={fixed} style={{margin : '0px', backgroundColor : 'black', borderColor : 'black', borderRadius : '0px'}}>
+                {processedIconsLeft.length > 0 && <Menu.Menu key={fixed+'left'} position='left'>{processedIconsLeft.map(menuItem('left'))}</Menu.Menu>}
+                {processedIconsRight.length > 0 && <Menu.Menu key={fixed+'right'} position='right'>{processedIconsRight.map(menuItem('right'))}</Menu.Menu>}
+            </Menu>
+        )
+    } else {
+   
+        menu = (
+            <Menu className={className} attached={fixed} style={{margin : '0px', backgroundColor : 'black', borderColor : 'black', borderRadius : '0px'}}>
+                {processedIconsLeft.length > 0 && <Menu.Menu key={fixed+'left'} position='left'>{processedIconsLeft.map(menuItem('left'))}</Menu.Menu>}
+                {processedIconsRight.length > 0 && <Menu.Menu key={fixed+'right'} position='right'>{processedIconsRight.map(menuItem('right'))}</Menu.Menu>}
+            </Menu>
+        )
+    }
+
 
     //console.log('default active index', getDetails(modalState).defaultActiveIndex)
 

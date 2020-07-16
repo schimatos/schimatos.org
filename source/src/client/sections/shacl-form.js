@@ -14,9 +14,9 @@ import base from './base-search'
 
 export default ({opts}) => {
     //console.log('at shacl form')
-    const saveSelection = (selectedShacls) => {
-        fieldModal(saveShaclModal())
-    }
+    // const saveSelection = (selectedShacls) => {
+    //     fieldModal(saveShaclModal())
+    // }
 
     const {allShaclDisplayIRI} = conversions(1)
     const {applyShacls} = useActiveraul()
@@ -56,7 +56,7 @@ export default ({opts}) => {
                     textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap'
                 
-                }}>{allShaclDisplayIRI(graph)(shacl)}</div>
+                }}>{allShaclDisplayIRI(graph)(/[a-z0-9]*$/i.exec(shacl)[0])}</div>
                 return {value, popup : <div>From: {graph}<br/>IRI: <a href={shacl} target="_blank">{shacl}</a></div>}
             },
             value : selectedShacls.map(x => {
@@ -75,7 +75,7 @@ export default ({opts}) => {
             }})}
         </Container>
         <Divider />
-        <Button align={'right'} onClick={() => saveSelection(selectedShacls)}><Icon name='save'/>Save As</Button>
+        {/* <Button align={'right'} onClick={() => saveSelection(selectedShacls)}><Icon name='save'/>Save As</Button> */}
         <Button align={'right'} floated={'right'} onClick={() => applyShacls(selectedShacls)}><Icon name='checkmark'/>Apply</Button>
             </>)} else {
             return null
@@ -97,7 +97,7 @@ export default ({opts}) => {
         standardQueries : ['Class', 'Objects Of', 'Subjects Of', 'Name', 'Value', 'Label', 'Target', 'All', 'Any'],
         initialState : {selectedShacls : [...(selections[id] ? selections[id] : [])], searchText: 'human'},
         query : 'LIST_SHACLS', content, responseConversion, convertionType : 'reduce', optionsFilter, opts,
-        placeholder : 'Select shacls to apply...'
+        placeholder : 'Select shacls to apply...', name : 'SHACL'
     })
 }
 

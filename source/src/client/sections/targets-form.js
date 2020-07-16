@@ -132,7 +132,8 @@ export default ({opts}) => {
         opts,
         convertionType : 'map',
         responseConversion : x => Object({key : x, text : displayIRI(x), value :x }),
-        placeholder : `Select target${type==='targets' ? '' : 's'}...`
+        placeholder : `Select target${type==='targets' ? '' : 's'}...`,
+        name : 'target'
     })
 }
 

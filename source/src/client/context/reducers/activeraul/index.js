@@ -20,8 +20,15 @@ import { keepCloning } from '../../../utils'
 
 //import {displayComponent} from '../../../custom-hooks'
 
+const addLabels = (state, action) => {
+    return {
+        ...state,
+        labels : {...state.labels, ...action.labels}
+    }
+}
+
 export default (state, action) => {
-    ////console.log('activeraul reducer', state, action)
+    // console.log('activeraul reducer', state, action, action.type)
     const  {type, t, id, i, value, loading, targets, no, ttype, prefix, hide, historyDispatch, noHold, startPoint} = action
     //action = {...action, display}
     const newState = {
@@ -45,7 +52,8 @@ export default (state, action) => {
         'DISPLAY_SUBMITTED' : () => displaySubmitted(state, action),
         'CHANGE_LOAD_STATUS' : () => changeLoadStatus(state, action),
         'CHANGE_ALTERNATE_PATH' : () => changeAlternatePath(state, action),
-        'UPDATE_TARGETS' : () => updateTargets(state, action)
+        'UPDATE_TARGETS' : () => updateTargets(state, action),
+        'ADD_LABELS' : () => addLabels(state, action)
     }[type]()
     // //console.log('inside activeraul reducer', keepCloning(state), keepCloning(action), keepCloning(newState))
     ////console.log('after before hist', newState, newState.focus, historyDispatch)

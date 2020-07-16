@@ -1,6 +1,7 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import {Sidebar, Segment, Transition, Button, Header, Container, Table} from 'semantic-ui-react'
 import rightSidebar from '../sections/right-sidebar'
+import { JourneyStep, useJourney  } from 'react-journey';
 
 export default ({direction, width, close, panels, visible, header, pushedContent, outside, panel}) => {
 
@@ -40,6 +41,11 @@ export default ({direction, width, close, panels, visible, header, pushedContent
 
 
     const SidebarComponent = () => {
+
+      const { useStep } = useJourney();
+      const el = useRef(null);
+      useStep(el, 'Once the entity has loaded you are able to see details about it.');
+
         function getWindowDimensions2() {
             const { innerWidth, innerHeight } = window;
             return {
@@ -70,7 +76,11 @@ export default ({direction, width, close, panels, visible, header, pushedContent
         as={Segment.Group}
         horizontal
         animation={'uncover'}
-        children={panel}
+        children={
+        <div ref={el} style={{padding: '0px', margin: '0px', width:'100%', height: '100%'}}>
+          {panel}
+        </div>
+        }
         direction={direction}
         visible={visible}
         width={width}/>)}
@@ -79,7 +89,6 @@ export default ({direction, width, close, panels, visible, header, pushedContent
 
     return (<>
         <Sidebar.Pushable as={Segment} basic style={{padding : '0px', margin : '0px', height : '100%', fixed : 'left'}}>
-
             <SidebarComponent/>
             <Sidebar.Pusher style={{height : '100%', backgroundColor : '#778899'}}>
                 <Segment basic style={{ borderLeft : 'solid grey 0.5px',padding : '0px', backgroundColor : '#778899', width : visible ? `${innerWidth-(474.01)}px` : '100%', align : 'left', height :`${innerHeight-2*42}px`}}>

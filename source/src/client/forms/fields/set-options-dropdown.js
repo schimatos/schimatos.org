@@ -2,7 +2,7 @@ import React from 'react'
 import {Dropdown} from 'semantic-ui-react'
 import {optionsFromArray, removeDuplicates, sortDictsByKeyNumericCompare} from '../../utils'
 
-export default ({key, value, options, onChange, loading, placeholder, multiple, customOptions, sort, simple, style}) => {
+export default ({key, value, options, onChange, loading, placeholder, multiple, customOptions, sort, simple, style, onClick}) => {
     const unsorted = customOptions ? options : optionsFromArray(removeDuplicates(options))
     const opts = sort ? sortDictsByKeyNumericCompare(unsorted, 'text') : unsorted
     return (<>
@@ -13,11 +13,12 @@ export default ({key, value, options, onChange, loading, placeholder, multiple, 
         value={value}
         loading={loading}
         placeholder={placeholder}
+        onClick={onClick}
         selection
         options={opts}
         onChange={onChange}/>
         :
-        <Dropdown fluid text={simple ? value : undefined} button style={style}
+        <Dropdown fluid text={simple ? value : undefined} button style={style} onClick={onClick}
         multiple={multiple}
         key={key}
         value={value}

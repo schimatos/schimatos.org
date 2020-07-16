@@ -1,6 +1,6 @@
 import React, {useReducer, useState, useEffect} from 'react'
 import {Grid, Button, Divider, Icon, Segment, Menu, Sticky} from 'semantic-ui-react'
-
+import { JourneyStep } from 'react-journey'
 import {keepCloning} from '../../utils'
 
 export default ({title, initialState, reducer, content}) => {
@@ -51,17 +51,19 @@ export default ({title, initialState, reducer, content}) => {
     const {innerHeight} = useWindowDimensions()
     return (
         <>
-        
+        {/* <JourneyStep message="You can use this dropdown to change your menu views. Try selecting 'SHACL Selection'">  */}
+       
         <Sticky>
-            
         <Menu fluid floated fixed={'top'} style={{backgroundColor : '#69696969', margin : '0px', padding : '0px'}} compact>
             <Menu.Menu position={'left'}>
                 <Menu.Item disabled={history.length  < histno + 1} onClick={() => quickDispatch('GO_BACK')} icon='undo'/>
             </Menu.Menu>
             <Menu.Menu style={{ textAlign:'center', verticalAlign:'middle', horizonalAlign : 'center'}}>
                 <Menu.Item fitted style={{width:'150px', margin:'0px', textAlign:'center', verticalAlign:'middle', horizonalAlign : 'center'}}><div style={{paddingLeft : '105px', width:'150px', margin:'auto', textAlign:'center', verticalAlign:'middle', horizonalAlign : 'center'}}>
-
-                    {title}
+                  {title}  
+                    {/* <Popup content={''}>{title}</Popup>     */}
+                    
+                    
                     </div></Menu.Item>
             </Menu.Menu>
             
@@ -70,11 +72,15 @@ export default ({title, initialState, reducer, content}) => {
                 <Menu.Item disabled={histno === 1} onClick={() => quickDispatch('GO_FORWARD')} icon='redo'/>
             </Menu.Menu>
         </Menu>
-
+        
         </Sticky>
         <Segment basic style={{backgroundColor : '#757575', marginTop : '42px', overflow : 'auto', height : `${innerHeight - 3*42}px`}}>
+
         <Segment basic style={{backgroundColor : '#757575', marginLeft : '0px', marginRight : '0px', marginTop : '0px', padding : '0px'}}><div style={{padding : '0px', marginLeft : '0px', marginRight : '0px'}}>{content(state, dispatch, valDispatch)}</div></Segment>
+
         </Segment>
+        {/* </JourneyStep> */}
+        
         </>
     )
 }

@@ -134,21 +134,21 @@ export default () => {
 
     const focusForm = () => ({
         active : true,
-        icon : 'eye',
+        icon : 'zoom',
         warning : 'Focus on target',
         onClick : () => dispatchLayout({type : 'CHANGE_START', startPoint : focus})
     })
 
     const expandAll = () => ({
         active : true,
-        icon : 'unordered list',
+        icon : 'expand',
         popup : 'Expand All',
         onClick : () => dispatch({type : 'ALL_VISIBILTIY', hidden : false})
     })
 
     const hideAll = () => ({
         active : true,
-        icon : 'minus',
+        icon : 'compress',
         popup : 'Collapse All',
         onClick : () => dispatch({type : 'ALL_VISIBILTIY', hidden : true})
     })
@@ -156,9 +156,12 @@ export default () => {
     // To add property based constraints with 'save shacl'
     const targIcons = [newPath(), copyFormB(), saveShacl()]
     const propIcons = [editPath()]
-    const icons = [undo(), redo(), del(), submit(), submitAndShacl(), focusForm(), ...(isProperty ? propIcons : targIcons), expandAll(), hideAll()]
+    // const icons = [undo(), redo(), del(), submit(), submitAndShacl(), focusForm(), ...(isProperty ? propIcons : targIcons), expandAll(), hideAll()]
 
     return customMenu({
-        warnings, popups : info, icons, fixed :'bottom'
+        warnings, popups : info, icons : {
+            left : [del(), ...(isProperty ? propIcons : targIcons), expandAll(), hideAll(), focusForm()],
+            right : [undo(), redo(), submit()]
+        }, fixed :'bottom'
     })
 }

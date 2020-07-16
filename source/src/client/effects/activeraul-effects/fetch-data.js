@@ -3,12 +3,12 @@ export default ({endpoint, kgraphConversions : {displayIRI, makeIRI}, Activeraul
     ////console.log('fect data called')
 
         const getOptions = (k, parent, property) => {
-             //console.log('inside get options')
-            // //console.log('inside get options', k)
-            // //console.log(k)
-            // //console.log(parent, property)
-            // //console.log(state, state.targets, state.targets[parent])
-            ////console.log('inside for each',state.targets, pare)
+             console.log('inside get options')
+            console.log('inside get options', k)
+            console.log(k)
+            console.log(parent, property)
+            console.log(state, state.targets, state.targets[parent])
+            console.log('inside for each',state.targets)
             if (k > -1 && state.targets[parent] && state.targets[parent].submitted) {
                 ////console.log('isnide if 1')
                 
@@ -18,6 +18,7 @@ export default ({endpoint, kgraphConversions : {displayIRI, makeIRI}, Activeraul
                 // Ignoring alternate paths for now
                 if (!requested && !loading && pathType !== 'alternativePath') {
                     ////console.log('inside if 2')
+                    console.log('getting options,', path)
                     endpoint({
                         query : 'OPTIONS', context : 'targets',
                         init : {type : 'SET_LOAD_STATUS', category : 'property', ids : [k], loading : true},
@@ -34,7 +35,7 @@ export default ({endpoint, kgraphConversions : {displayIRI, makeIRI}, Activeraul
         //console.log('state', state, state.properties)
 
         Object.entries(state.properties ? state.properties : {}).forEach(([k, {parent, property}]) => {
-            //console.log('inside object.entries')
+            console.log('inside object.entries')
             getOptions(k, parent, property)
         })
 }

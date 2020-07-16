@@ -24,6 +24,9 @@ const [ActiveraulContext, ActiveraulProvider] = customProvider(reducer, {
     },
     selections : {
 
+    },
+    labels : {
+        
     }
 }, 'ActiveraulContext')
 

@@ -27,7 +27,7 @@ export default (state, {t, id}) => {
             return newstate
         }
 
-        const nstate = {...removal(state, type, id), focus : reduceCheck(state, type, id) ? {type : t, id : p, hold : false} : state.focus}
+        const nstate = {...removal(state, type, id), focus : reduceCheck(state, type, id, allChildren) ? {type : t, id : p, hold : false} : state.focus}
        //const newState = {...nstate, focus : {type : t, id : p, hold : false}}
 
         ////console.log('state after removal', nstate, t, p, nstate.focus.id, nstate.focus.type)
@@ -37,7 +37,12 @@ export default (state, {t, id}) => {
         return state
     }
 }
+
+
+
 // Checks if focus is child or grandchild
-const reduceCheck = (state, type, id) => {
-    return (type===state.focus.type && id === state.focus.id) || allChildren(t, i).reduce((t, x) => t || reduceCheck(state, type === 'targets' ? 'properties' : 'targets', x), false)
+const reduceCheck = (state, type, id, allChildren) => {
+    // const allChildrenArray.isArray(state[t][id] ? (state[t][id].children ? state[t][id].children : []) : []) ? (state[t][id] ? (state[t][id].children ? state[t][id].children : []) : []) : (x => Object.entries(x).reduce((t, [k,v]) => [...t, ...v], []))(state[t][id] ? (state[t][id].children ? state[t][id].children : []) : [])
+
+    return (type===state.focus.type && id === state.focus.id) || allChildren(type, id).reduce((t, x) => t || reduceCheck(state, type === 'targets' ? 'properties' : 'targets', x), false)
 }

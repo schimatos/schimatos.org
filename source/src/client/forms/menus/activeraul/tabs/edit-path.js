@@ -46,8 +46,8 @@ export default () => {
     return {
         modal : modal(),
         active : focus.type === 'property',
-        icon : 'road',
-        popup : 'Edit s',
+        icon : 'edit',
+        popup : 'Add form field',
         onClick : value => Activeraul().updatePath(id, value)
     }
 }

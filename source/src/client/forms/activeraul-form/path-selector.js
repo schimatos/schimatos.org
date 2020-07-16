@@ -148,7 +148,7 @@ export default ({path : p, value:va=get(p), onChange:c, name:n}) => {
         if (!l) {
             return change(vs)
         }
-        console.log([l, ...list], change, vs)
+        // console.log([l, ...list], change, vs)
         const cchange = a => list.length > 0 ? ch(list, change, a) : change(a)
         if (_.isArray(l)) {
             const [i,j] = l
@@ -170,7 +170,7 @@ export default ({path : p, value:va=get(p), onChange:c, name:n}) => {
 
     const add = (index, right) => ({value, ...r}) => {
         const i = index + right 
-        console.log('adding', value, value.slice(0,i), value.slice(i), right ? [{hist : [], link : undefined, prev : {path : undefined, inverse : false}, next : {path : undefined, inverse : false}},_.cloneDeep(r.section)] : [_.cloneDeep(r.section), {hist : [], link : undefined, prev : {path : undefined, inverse : false}, next : {path : undefined, inverse : false}}])
+        // console.log('adding', value, value.slice(0,i), value.slice(i), right ? [{hist : [], link : undefined, prev : {path : undefined, inverse : false}, next : {path : undefined, inverse : false}},_.cloneDeep(r.section)] : [_.cloneDeep(r.section), {hist : [], link : undefined, prev : {path : undefined, inverse : false}, next : {path : undefined, inverse : false}}])
         return {value : _.concat(value.slice(0,i), right ? [{hist : [], link : undefined, prev : {path : undefined, inverse : false}, next : {path : undefined, inverse : false}},_.cloneDeep(r.section)] : [_.cloneDeep(r.section), {hist : [], link : undefined, prev : {path : undefined, inverse : false}, next : {path : undefined, inverse : false}}],value.slice(i)), ...r}
     }
 
@@ -188,7 +188,7 @@ export default ({path : p, value:va=get(p), onChange:c, name:n}) => {
     // const [val, setVal] = useState(v)
     
     const PathSection = (locList, v) => {
-        console.log('path section called', locList, v)
+        // console.log('path section called', locList, v)
         if (_.isArray(v)) {
             return <Input><Icon {...{name : 'pointing up'}}/>{v[0]}</Input>
         } else if (_.isNumber(v.value)) {

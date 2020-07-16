@@ -33,7 +33,6 @@ export const displayComponentFunctions = ({state, displayIRI}) => {
         const children = getChildren(t, id)
         return Array.isArray(children) ? arrFunc(children) : dictFunc(children)
     }
-
     const sameActionChildren = (t, id, f) => typeSpecificChildren(t, id, f, x => dictMap(x, ([k, v]) => f(v) ))
 
     const allChildren = (t, id) => {
@@ -68,9 +67,10 @@ export const displayComponentFunctions = ({state, displayIRI}) => {
         pathString,
         targetString,
         componentString,
-        allChildren,
+       // allChildren,
         filterChildren,
         removeChild,
-        copyChildren
+        copyChildren,
+        allChildren
     }
 }

@@ -67,7 +67,7 @@ export default base_graph => {
 
     const options = optionsFromArray(Object.keys(prefixes))
 
-    return ({value, graph, validator, ...other}) => {
+    return ({value, graph, validator, options: ops, labels, ...other}) => {
         //console.log('iri field value',value)
         const {default_namespace} = Object.values(filterKeyDict(graphDetails, k => k.includes(base_graph || graph)))[0]  || {}
         const v = (value && value !== '' && value) || prefixes[default_namespace] || ''
@@ -79,7 +79,7 @@ export default base_graph => {
         ////console.log('iri_rreg', iri_regex)
         //validator = {...(validator || {}), pattern : {value : iri_regex, message : 'Invalid IRI'}}
 
-        const {onClose, onFocus, onChange, onKeyPress, isValidating, defaultValue, error} = useFormCustom({...other, validator, unpack, repack, value})
+        const {onClose, onFocus, onChange, onKeyPress, isValidating, defaultValue, error} = useFormCustom({...other, validator, unpack, repack, value, prefixes})
 
         //console.log('unpack', unpackSingle(value))
 
@@ -114,7 +114,7 @@ export default base_graph => {
                     error={error ? true : false}
                     attached={'right'}
                     options={options}/>
-                {!Array.isArray(value) ? <Input
+                {(ops||[]).length < 1 ? <Input
                     style={{width : '100%',height : '100%', margin : '0px', padding : '0px'}}
                     onClick={e => e.stopPropagation()}
                     defaultValue={defaultValue(1)}
@@ -138,7 +138,12 @@ export default base_graph => {
                     style={{width : '100%'}}
                     defaultValue={defaultValue(1)}
                     value={defaultValue(1)}
-                    options={optionsFromArray(defaultValue(1))}
+                    options={[...ops.map(({key, text, value}) => {
+                        // console.log(labels, value, text, 'dropdown render')
+                        return ({key, text: labels[value] || text, value})
+                    
+                    })
+                        , {key : defaultValue(1), text: defaultValue(1), value: defaultValue(1)}]}
                     //onClick={e => e.stopPropagation()}
                     onChange={onChange(1)
                     }
@@ -156,7 +161,7 @@ export default base_graph => {
     }
 }
 
-const useFormCustom = ({onSubmit, unpack, repack, value, validator, onChange, ...otherProps}) => {
+const useFormCustom = ({onSubmit, unpack, repack, value, validator, onChange, prefixes={}, ...otherProps}) => {
     const [u, r] = unpack ? [unpack, repack] : [x => [x], ([x]) => x]
     const values = u(value)
 
@@ -170,7 +175,17 @@ const useFormCustom = ({onSubmit, unpack, repack, value, validator, onChange, ..
     const { handleSubmit, register, errors, setValue, triggerValidation, getValues } = useForm()
 
     const submit = () => {
-        const newValue = r(Object.values(keyDelDict(getValues(), 'value')))
+        let newValue = r(Object.values(keyDelDict(getValues(), 'value')))
+        if (newValue.includes(':')) {
+            const [prefix, v] = newValue.split(':') // this is being deon in the wrong spot, to fix at lter date
+            if (prefix in prefixes) {
+                newValue = prefixes[prefix] + v
+            } else {
+                const [prefix2, v2] = newValue.replace(/[^]*[/#]/, '').split(':') // this is being deon in the wrong spot, to fix at lter date
+                if (prefix2 in prefixes) {
+                    newValue = prefixes[prefix2] + v2
+            }
+        }}
         if (value !== newValue) {
             setValue('value', newValue)
             handleSubmit(v => {

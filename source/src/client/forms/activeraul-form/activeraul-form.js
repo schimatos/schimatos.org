@@ -12,6 +12,7 @@ import setOptionsDropdown from '../fields/set-options-dropdown'
 import {MultiWordField} from '../../validated-fields/multi-word-field-2'
 import IRIField from '../../validated-fields/IRI-field'
 import {onFormLoad} from '../../effects'
+import triplestoreInterface from '../../triplestore-interface'
 
 //import MultiWordField from 'multi-word-field'
 
@@ -65,7 +66,7 @@ import {onFormLoad} from '../../effects'
 
 export default () => {
     const IField = IRIField('knowledge')
-
+    const triplestore = triplestoreInterface()
    onFormLoad()
 
    const [,hDisp] = useContext(HistoryContext)
@@ -79,12 +80,24 @@ export default () => {
     !eqHash(h[0], a) && hist.length > 3 && hDisp({type : 'REFRESH_STATE', activeraulDispatch})
    }, 1000)
 
+   const [targets,] = useContext(TargetsContext)
 
 
     const [state, dispatch] = Activeraul()
-    const {focus, propertyList, properties} = state
-    const {addOption, addOptionOnly, remove, cancelLoad, submitAll} = useActiveraul()
-    const [targets,] = useContext(TargetsContext)
+    const {focus, propertyList, properties, targets: actualTargets} = state
+    const {addOption, addOptionOnly, remove, cancelLoad, submitAll, getLabels} = useActiveraul()
+    
+    useEffect(() => {
+        const toGet = [Object.values(propertyList).map(target => target.in|| []).flat(), Object.values(actualTargets).map(target => target.value).filter(x => x!= '')].flat()
+        const optionsToGet = Object.values(targets.property).map(x => x.options).flat().map(x => x.value).filter(x => x.includes('http://'))
+        // console.log('labvels to get', toGet)
+        console.log(toGet, targets, state)
+        console.log(optionsToGet)
+        getLabels([toGet, optionsToGet].flat())
+    }, hash([actualTargets, propertyList, Object.values(targets.property)]))
+
+    console.log('targets', targets, state.labels)
+
     const [{startPoint},] = useContext(LayoutContext)
     const {displayIRI, displayIRIMulti, makeIRI} = Conversions(0)
     //const {fetchData, updateFields} = customEffects()
@@ -93,7 +106,7 @@ export default () => {
 
     const {display_path_instead_of_name} = advanced_features
 
-   console.log(state)
+//    console.log(state, targets)
 
 
     // state.propertyList = {
@@ -107,26 +120,53 @@ export default () => {
     
     // useEffect(() => {updateFields()}, hashDict(targets.property))
     // useEffect(() => {fetchData()})
+    // const v = start
+    // const [detailsForEntity, setDetails] = useState([])
 
+    // useEffect(() => {
+    //     triplestore({
+    //         query : 'TARGET_DETAILS',
+    //         initFunc: () => setDetails([]),
+    //         errorFunc: () => setDetails([]),
+    //         responseFunc: x => setDetails(Object.entries(x.reduce((t, [p, o]) => {
+    //             t[p] = [...(t[p] ? t[p] : []), o]
+    //             return t
+    //         }, {}))),
+    //         subject : value
+    //     }) 
+    // }, hash(value))
+ 
+    // const unpackSingle = iri => {
+    //     const f = Object.entries(schema_prefixes).find(([k, v]) => iri.includes(v))
+    //     return f ? f[0] + ':' + iri.slice(f[1].length,) : iri
+    // }
+    
+    // const nm = detailsForEntity.find(([k,v]) => k == 'http://www.w3.org/2000/01/rdf-schema#label')?.[1]
+    // const typeDetails = detailsForEntity.find(([k,v]) => k == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type')?.[1]
     
 
     const PropertySegment = ({children, id, pathOpen}) => {
         const {property, loading, hidden} = properties[id]
         const {path, pathType, severity, maxCount, message, minCount, name, description, class:cl,in:ins} = propertyList[property]
         const displayProperties = Object.keys(propertyList[property]).filter(x => !['path', 'pathType', 'message', 'severity'].includes(x))
-        console.log(property)
+        // console.log(property)
         children = pathType === 'alternativePath' ? [...children[0], ...children[pathOpen]] : children
         const targetsNo = children.length
         const atMax = maxCount && (maxCount <= targetsNo)
         const atMin = minCount >= targetsNo
         const violation = !severity || severity === 'Violation'
-    
-        const {color, sevIcon, altName} = {
-            'Info' : {color : 'green',  sevIcon : 'info circle', altName : 'Possible Field'},
+        // console.log(actualTargets)
+        const numberOfActualValues = children.reduce((count, id) => actualTargets[id].value && actualTargets[id].value != '' ? count+1 : count,0)
+        const constraintSatisfied = (numberOfActualValues >= minCount) && (!maxCount || (maxCount >= targetsNo))
+
+        const {color : tempColour, sevIcon, altName} = {
+            'Info' : {color : 'white',  sevIcon : 'info circle', altName : 'Possible Field'},
             'Warning' : {color : 'yellow', sevIcon : 'alarm', altName : 'Likely Field'},
-            'Violation' : {color : 'red',    sevIcon : 'warning sign', altName : 'Definite Field'},
+            'Violation' : {color : 'red',    sevIcon : `warning sign`, altName : 'Definite Field'},
             'none' : {}
         }[severity ? severity : 'Violation']
+
+        const color = constraintSatisfied ? 'green' : tempColour
     
         const {pathIcon, pathText, pathDescription} = {
             path : {},
@@ -201,24 +241,35 @@ export default () => {
 
         const childValues = children.map(x => state.targets[x].value)
         const [options, childOptions] = targets.property[id].options.reduce(([o, c], opt) => childValues.includes(opt.value) ? [o, [...c, opt]] : [[...o, opt], c], [[],[]])
+        // console.log(options, childOptions, state)
         const childOptionsDict = Object.fromEntries(childOptions.map(x => [x.value, x]))
+        // console.log(options, childOptions, childOptionsDict)
+        // getLabels(ins||[])
         const TargetDropdown = (i, value, c) => {
             //console.log('at dropdown generate')
             const currentOpt = (value === '' || !childOptionsDict[value]) ? {text:'',key:'',value:''} : childOptionsDict[value]
             const opts = value !== '' ? [...options, currentOpt] : options
             const {field, check} = targets.renderedValidators[id] ? targets.renderedValidators[id]({value, onSubmit : (v) => addOption(i, id, v, undefined)
                 , name : `${i}`, options : opts, makeIRI, displayIRI}) : {field : <div></div>, check : false}
-            //const Field = field
+                
+                
+                // console.log('children', children)
+                const chilrenFlattened = children.map(c => (actualTargets[c]?.children || [])).flat()
+            const IRINodekind = ((!!propertyList[property].nodeKind && propertyList[property].nodeKind.includes('IRI') && !propertyList[property].nodeKind.includes('Or')) || chilrenFlattened.length > 0)
+                //const Field = field
             // need to update shape
             //console.log(value, optionsFromArray(ins||[]))
             //console.log(propertyList[property].nodeKind ,propertyList[property].nodeKind && propertyList[property].nodeKind.includes('IRI') ,propertyList[property].nodeKind && !propertyList[property].nodeKind.includes('Or'))
             return (
                 <div onClick={() => dispatch({type : 'SET_FOCUS', t : 'targets', i, noHold : true, startPoint})}>
-              <Input onSubmit={console.log} type='text' action fluid style={{padding : '0px', margin : '0px', width : '100%'}} >
-                {!ins ? !(!!propertyList[property].nodeKind && propertyList[property].nodeKind.includes('IRI') && !propertyList[property].nodeKind.includes('Or')) &&!(propertyList[property].pattern || typeConstraints[propertyList[property].datatype]?.pattern) && field : <Select key='selfield' onChange={(v, {value}) => addOption(i, id, value, undefined)} value={value||ins?.[0]} options={optionsFromArray(ins||[])} fluid/>}
+              {/* <Dropdown options={options}/> */}
+              <Input onSubmit={() => {}} type='text' action fluid style={{padding : '0px', margin : '0px', width : '100%'}} >
+                
+                {!ins ? !IRINodekind &&!(propertyList[property].pattern || typeConstraints[propertyList[property].datatype]?.pattern) && field : <Select key='selfield' placeholder={'-- Select a value --'} onChange={(v, {value}) => addOption(i, id, value, undefined)} value={value} options={ins.map(x => ({key : x, text : state.labels[x] || x, value : x}))} fluid/>}
                 {(propertyList[property].pattern || typeConstraints[propertyList[property].datatype]?.pattern) && [<MultiWordField key='multiword' {...{...propertyList[property], value, onSubmit : (v) => addOption(i, id, v, undefined), pattern : '/'+(propertyList[property].pattern||typeConstraints[propertyList[property].datatype]?.pattern)+'/'
                 }}/>, value && 'Currently Submitted: ' + value]}
-                {(!!propertyList[property].nodeKind && propertyList[property].nodeKind.includes('IRI') && !propertyList[property].nodeKind.includes('Or')) && [<IField key='ifielf' value={value} onChange={(t, {value})=> addOption(i, id, value, undefined)} onSubmit={console.log}/>]}
+                {IRINodekind && [<IField key='ifielf' value={value} labels={state.labels} onChange={(t, {value})=> addOption(i, id, value, undefined)} onSubmit={console.log} options={options}/>]}
+                {i > 0 && !atMin && <Button icon='x' onClick={() => remove('targets', i)}/>}
                 </Input>
                 {/* {value} */}
                 {/* The below field is depricated and simply displays the input in the background state of activeraul at a given time. Do not use it to make inputs as it does not perform validations.
@@ -262,10 +313,11 @@ export default () => {
 
     const TargetSegment = ({value, submitted, children, id, TargetDropdown}) => {
         const parentId = state.targets[id].parent
-        const dbRemove = (!children || children.length === 0) && parentId > -1
+        const dbRemove = parentId > -1
         TargetDropdown = TargetDropdown ? TargetDropdown : PropertySegment({id : parentId, ...state.properties[parentId]}).TargetDropdown
+        
         return {header : submitted &&
-            {title : {content : displayIRI(value).replace(`http://linked.data.gov.au/dataset/environment/assessment#`, 'doee_asm:'), popup :  hyperlink(value)},
+        {title : {content : children.length > 0 ? <h2>{state.labels[value] || displayIRI(value)}</h2> :(state.labels[value]  || displayIRI(value)), popup :  hyperlink(value)},
             right : {
                 buttons :
                 dbRemove ? [
@@ -302,13 +354,18 @@ export default () => {
             <Segment key={type + id}
             onClick={() => dispatch({type : 'SET_FOCUS', t : type, i : id, startPoint})}
             //style={{marginBottom : pad ? '10px' : '0px', marginTop : pad ? '10px' : '0px', marginRight : '0px', marginLeft : '0px', padding : '0px'}}
-            style={{padding : pad ? '10px' : '0px', marginLeft : '0px', marginRight : '0px', marginTop : children.length > 0 && !isFirst && !isMainShown ? '10px' : '0px', marginBottom : children.length > 0 && !isLast && !isMainShown ? '10px' : '0px', scrollable : true}}
+            style={{padding : pad ? '10px' : '0px', marginLeft : '0px', marginRight : '0px', marginTop : children.length > 0 && !isFirst && !isMainShown ? '10px' : '0px', marginBottom : children.length > 0 && !isLast && !isMainShown ? '10px' : '0px', scrollable : true
+        
+        }}
             secondary={isPrimary}
             color={color}
             >
-                {header && ActiveraulSegmentHeader(type, children, hidden, id, header)}
+                <header style={{position: 'sticky'}}>{header && (ActiveraulSegmentHeader(type, children, hidden, id, header))}</header>
+            
+                <div style={{maxHeight : type === 'targets' && id !== 0 && '60vh', overflow: type === 'targets' && children.length > 0 ? 'auto' : 'visible'}}>
                 {!hidden && content}
                 {!hidden && contentReduce(children.map(nextRender(type === 'targets' ? 'properties' : 'targets', details, children.length)))}
+                </div>
                 {bottom && <><br/>{bottom}</>}
             </Segment>
             )
@@ -334,10 +391,10 @@ export default () => {
         
 
                 return  (
-                    <Segment basic style={compact}>
+                    <Segment basic style={compact} scrollable={true}>
                         <Grid style={compact}>
                             <Grid.Row style={{marginLeft : '0px',marginTop : '0px',marginRight : '0px',marginBottom : hidden || children.length === 0 ? '0px' : '10px', padding : '0px'}}>
-                                {sideColumn('left', children.length === 0 ? left : extendDict(left, {buttons : extendArray(left && left.buttons, [{name : hidden ? 'unordered list' : 'minus', popup : {content : hidden ? 'Expand' : 'Minimize'}, onClick : {type : 'CHANGE_VISIBILITY', id, ttype : type, hidden : !hidden}}])}))}
+                                {sideColumn('left', children.length === 0 ? left : extendDict(left, {buttons : extendArray(left && left.buttons, [{name : hidden ? 'expand' : 'compress', popup : {content : hidden ? 'Expand' : 'Minimize'}, onClick : {type : 'CHANGE_VISIBILITY', id, ttype : type, hidden : !hidden}}])}))}
                                 {Column('center', 8, <ActiveraulPopup align={'center'} trigger={title && (title.content !== undefined) ? title.content : title} popup={title.popup} key={'centre'}/>)}
                                 {sideColumn('right', right)}
                             </Grid.Row>
@@ -345,7 +402,7 @@ export default () => {
                     </Segment>
                 )
             }
-            return [nextRender(startPoint.type)(startPoint.id), <div style={{paddingTop : '5px', textAlign : 'right'}}><Button onClick={submitAll}>Submit</Button></div>]
+            return [nextRender(startPoint.type)(startPoint.id), state[startPoint.type][startPoint.id].children.length > 0 && <div style={{paddingTop : '5px', textAlign : 'right'}}><Button onClick={submitAll}>Submit</Button></div>]
         }
 
 

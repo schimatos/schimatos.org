@@ -5,7 +5,7 @@ const [LayoutContext, LayoutProvider] = customProvider(reducer, {
     info : true,
     warnings : true,
     propertyDetails : true,
-    selectionsSidebar : false,
+    selectionsSidebar : true,
     creationSidebar : false,
     queries : false,
     optionsType : 'target',

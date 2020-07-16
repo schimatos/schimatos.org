@@ -67,6 +67,15 @@ export const useActiveraul = () => {
         }
     }
 
+    const getLabels = (labels) => {
+        const toRequest = labels.filter(x => !Object.keys(state.labels).includes(x))
+        triplestore({
+            query : 'GET_LABELS',
+            IRIS : toRequest,
+            responseFunc: labels => dispatch({type: 'ADD_LABELS', labels})
+        })
+    }
+
     const activeraulSubmission = async ({getShacl, insert, query, applyTo, shacls, point : {type:type1, id:id1}={}}) => {
         console.log('1')
         const {type:type2, id:id2} = applyTo !== undefined ? applyTo : {...focus}
@@ -444,7 +453,8 @@ export const useActiveraul = () => {
         cancelLoad,
         addOptionFlexible,
         getShaclText,
-        submitAll
+        submitAll,
+        getLabels
     }
 }
 

@@ -15,7 +15,7 @@ export default (shaclFile) => {
     const {makeIRIMulti, makeIRIMixed, makeIRI} = conversions(0)
 
     const remakeTtl = state => {
-        console.log('inside remake ttl', state)
+        // console.log('inside remake ttl', state)
         const forceIRI = name => {
             return '<'+(shaclConversions.makeIRI(name))+'>'
         }
@@ -32,7 +32,7 @@ export default (shaclFile) => {
         
         const targetBy = ([targetType, targets]) => {
             const number = targets.length
-            console.log('targetTypes', targetType, targets)
+            // console.log('targetTypes', targetType, targets)
             return number === 0 || targetType === 'name' ? '' : (
             targets.reduce((total, x, i) => i < number - 1 ? `${total} ${forceIRIKg(x)},` : `${total} ${forceIRIKg(x)}${number > 1 ? ']' : ''} ;`,`\n\tsh:target${targetType} `+(number > 1 ? '[' : ''))
             )

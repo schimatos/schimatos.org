@@ -2,6 +2,8 @@ import {arraysUnion, strip} from '../../../utils'
 
 export default (state, {category, id, res, displayIRI}) => {
     const entry = value => Object({key : value, text : displayIRI(value), value})
+    console.log('search response', state, category, id, res, displayIRI)
+    
     if (category === 'property') {
         const {selections, options} = res
         const customUnion = (dicts, lists) => {

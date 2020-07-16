@@ -16,7 +16,7 @@ import conversions from '../custom-hooks/helper-functions/conversions'
 import targetDetails from './target-details.js'
 import getlabel from './get-label.js'
 import getlabels from './get-labels.js'
-
+import getlabelsanddetails from './get-labels-and-details.js'
 
 export default () => {
     const [triplestore,] = useContext(TriplestoreContext)
@@ -41,8 +41,10 @@ export default () => {
                 'DATATYPE_FIND' : datatypeFind,
                 'CLASS_FIND' : classFind,
                 'TARGET_DETAILS' : targetDetails,
+               // 'TARGET_DETAILS_TYPE' : targetDetailsType,
                 'GET_LABEL' : getlabel,
-                'GET_LABELS' : getlabels
+                'GET_LABELS' : getlabels,
+                'GET_LABELS_AND_DETAILS' : getlabelsanddetails
             }[query](updatedProps)
 
             //console.log('response', await response)
