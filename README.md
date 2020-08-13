@@ -15,7 +15,7 @@ During data-entry, the tool uses entity relationships and attribute requirements
  Additionally, validation procedures reduce the introduction of erroneous data.
 
 ## Demo
-The demo is currently running at [schimatos.github.io](http://schimatos.github.io). The downloadable [distribution](https://github.com/schimatos/schimatos.org/dist) is also preconfigured for the demo; it can be run by downloading the distribution and then opening the [index.html](https://github.com/schimatos/schimatos.org/dist/index.html).
+The demo is currently running at [schimatos.github.io](http://schimatos.github.io). The downloadable [distribution](https://github.com/schimatos/schimatos.org/tree/master/dist) is also preconfigured for the demo; it can be run by downloading the distribution and then opening the [index.html](https://github.com/schimatos/schimatos.org/tree/master/dist/index.html).
 
 ### Data entry
 To perform data entry on the entity open the sidebar and use the dropdown in the sidebar header to navigate to `Target Selections`. In this demo, the entity of interest is *Sergio José Rodríguez Méndez* and so can be found by searching for 'Sergio'. In the dropdown, select `wd:Q88056610`, this is the identifier for *Sergio José Rodríguez Méndez*. Once selected, you will see that the value has been automatically entered as the focus of the form. Details about the entity are provided in the sidebar. This can be used to confirm that one is working with the correct entity.
