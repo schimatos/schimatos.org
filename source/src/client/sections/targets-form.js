@@ -83,7 +83,8 @@ export default ({opts}) => {
                 <Grid.Column key={'1a'+i}>
                     <b>{unpackSingle(name)}</b>
                 </Grid.Column>
-                <Grid.Column  key={'3a'+i} stretched width={14} style={{padding : '0px'}}>
+                {/* <br/> */}
+                <Grid.Column  key={'3a'+i} stretched width={14} style={{padding : '0px', paddingTop : '14px'}}>
                 <br/>
                     {values.map(x => <div style={{margin : '0px', padding : '0px'}} key={i+'div'}>{unpackSingle(x)}</div>)}
                 </Grid.Column>

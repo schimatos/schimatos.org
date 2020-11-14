@@ -1,5 +1,5 @@
 const _ = require('underscore')
-const Crypto = require('Crypto-js')
+const Crypto = require('crypto-js')
 const React = require('react')
 
 export const contentReduce = list => list.reduce((t, x) => <>{t}{x}</>, <></>)

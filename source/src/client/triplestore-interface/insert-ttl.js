@@ -1,6 +1,6 @@
 
 // ifimport N3 from 'N3'
-const N3 = require('N3')
+const N3 = require('n3')
 import requester from './requester/single-query'
 
 export const insertTtl = async ({graph, triplestore, ttl}) => {

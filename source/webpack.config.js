@@ -15,7 +15,7 @@ module.exports = {
     // supplier: './src/supplier/index.js'
   },
   output: {
-    path: path.join(__dirname, outputDirectory),
+    path: path.join(__dirname, "../", outputDirectory),
     filename: 'static/js/[name].bundle.js'
   },
   module: {

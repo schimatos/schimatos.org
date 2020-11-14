@@ -1,7 +1,7 @@
 {
-  "name": "Schimatos",
+  "name": "schimatos",
   "version": "1.0.0",
-  "description": "Full stack web application of ActiveRaUL",
+  "description": "Full stack web application of Schimatos",
   "main": "src/server/index.js",
   "scripts": {
     "build": "webpack --mode production",
