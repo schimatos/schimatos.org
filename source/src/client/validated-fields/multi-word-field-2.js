@@ -30,7 +30,7 @@ export const MultiWordField = (props) => {
 
         const submit = e => {
             ////console.log('submit called', state, e, v, r)
-            console.log(getValues())
+            // console.log(getValues())
             setValue(name||'fooName', remakeWord(getValues()))
 
             handleSubmit(v => {

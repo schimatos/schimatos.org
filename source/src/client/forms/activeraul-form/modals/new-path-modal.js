@@ -7,6 +7,9 @@ import { multiOrSingleInput } from '../../fields/multi-or-single-input'
 import { intInput } from '../../fields/int-input'
 import IRIField from '../../../validated-fields/IRI-field'
 
+// Literally just need to apply the constraint for sh:property here
+
+
 export default () => {
     const PathField = IRIField('knowledge')
 

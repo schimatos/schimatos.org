@@ -16,7 +16,7 @@ const get = x => (_.isString(x) || _.isUndefined(x)) ? x : dictSwitch({
         options : t.map(get),
         get current () {return this.options[this.value]},
         get lastPath () {
-            console.log(this.current)
+            // console.log(this.current)
             //return this.current
             return _.isString(this.current) ? this.current : this.current.lastPath
         },
@@ -42,7 +42,7 @@ const get = x => (_.isString(x) || _.isUndefined(x)) ? x : dictSwitch({
     }),
     default : t => {
         const s = _.tail(t).reduce((tt, v) => [...tt, {hist : []}, get(v)], get(t[0]))
-        console.log(t.length, t, _.range(0, t.length))
+        // console.log(t.length, t, _.range(0, t.length))
         return {
         range : x[0],
         link : [],
@@ -192,7 +192,7 @@ export default ({path : p, value:va=get(p), onChange:c, name:n}) => {
         if (_.isArray(v)) {
             return <Input><Icon {...{name : 'pointing up'}}/>{v[0]}</Input>
         } else if (_.isNumber(v.value)) {
-            console.log(v,v.options)
+            // console.log(v,v.options)
             const o = optionsTextMap(v.options, (x, i) => <Input>{PathSection([...locList, i], x)}</Input>)
             return <Select {...{options:o, text : o[v.value].text, style : {width : '100%'}, onChange : (e, {value}) => {
                 cha(locList, r => ({...r, value}))}}}/>
@@ -211,18 +211,18 @@ export default ({path : p, value:va=get(p), onChange:c, name:n}) => {
             //     v.value = _.concat(value.slice(0, i-1), value.slice(i+1))
             // }
             return value.map((x,i) => {
-                console.log(x, i, ((i+1) % 2 ==0) ?'irr':'sec', (i+1) %2)
+                // console.log(x, i, ((i+1) % 2 ==0) ?'irr':'sec', (i+1) %2)
                 const la1 = _.findLast(value[i-1]||[], y => _.isString(y) || y?.lastPath)
                 const n1 = _.find(value[i+1]||[], y=> _.isString(y) || y?.nextPath) // keep searching right
                 const la = _.isString(la1) ? la1 : la1?.lastPath
                 const n = _.isString(n1) ? n1 : n1?.lastPath
-                console.log(x, value[i-1], _.findLast(value[i-1]||[], y => y?.lastPath), value[i+1])
-                console.log('loclist', locList)
+                // console.log(x, value[i-1], _.findLast(value[i-1]||[], y => y?.lastPath), value[i+1])
+                // console.log('loclist', locList)
                 return ( i % 2) ? <DI left={la} right={n} link={link} value={x} onChange={updated => cha(locList, i, updated)}/> : [allowAdd && <Button icon='plus' onClick={() => addl(locList, i, false)}/>, allowRem && i>0 && <Button icon='minus' onClick={() => reml(locList, i, false)}/>, x?.map((y, ii) => ii % 2 ? <DI left={x[ii-1] && _.isString(x[ii-1]) ? x[ii-1] : x[ii-1].lastPath} right={x[ii+1] && _.isString(x[ii+1]) ? x[ii+1] : x[ii+1].nextPath} link={link} value={x}/> : PathSection([...locList, i, ii], y)), allowRem && i+1<value.length && <Button icon='minus' onClick={() => reml(locList, i, true)}/>, allowAdd && <Button icon='plus' onClick={() => addl(locList, i, true)}/>]
             })
         }
     }
-    console.log([], va)
+    // console.log([], va)
     return PathSection([], val)
 }
 //     const PathSection = (locList, [pT, ...paths], {value=_.isArray(pT)?pT[0]:0, ...r}={}) => {

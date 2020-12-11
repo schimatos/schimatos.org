@@ -77,7 +77,7 @@ export const useActiveraul = () => {
     }
 
     const activeraulSubmission = async ({getShacl, insert, query, applyTo, shacls, point : {type:type1, id:id1}={}}) => {
-        console.log('1')
+        // console.log('1')
         const {type:type2, id:id2} = applyTo !== undefined ? applyTo : {...focus}
         const type = type1 || type2
         const id = id1 || id2
@@ -89,7 +89,7 @@ export const useActiveraul = () => {
         const {path, pathType, class : sClass, datatype, node} = prop.property !== undefined ? propertyList[prop.property]  : {path : '', pathType : ''}
         const subject = prop.parent !== undefined ? state.targets[prop.parent].value : ''
         const action = key > -1 && insert ? 'insert' : undefined
-        console.log('2')
+        // console.log('2')
         //console.log(sClass,propertyList[prop.property] )
 
         // sClass && endpoint({
@@ -157,9 +157,9 @@ export const useActiveraul = () => {
         // also need to handle the undo process for taking into account when existing class be accidentally deleted
 
 
-        console.log(node)
+        // console.log(node)
         const shacls2 = (shacls.length == 0 && node) ? {[settings.shacl_graph] : [[node, true,true,true,true]]} : shacls
-        console.log(node,  {getShacl:getShacl || !!node, targets, shacls: shacls2})
+        // console.log(node,  {getShacl:getShacl || !!node, targets, shacls: shacls2})
         endpoint({
             query, context : 'activeraul',
             edit : [{subject, path, targets : datatype ? targets.map(x => x) : targets, pathType, action, ...(sClass && {additionalTriples : [['<'+targets[0] + '>', '<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>', '<' + sClass + '>']]})}, {subject, path, pathType, action : 'delete'}],
@@ -210,7 +210,7 @@ export const useActiveraul = () => {
     const submitAll = () => {
         dispatch({type:'SUBMISSION_MADE', t : 'targets', id : 0})
         Object.entries(state.targets).forEach(([k, x]) => {
-            console.log(k,x)
+            // console.log(k,x)
             !x.submitted && x.value !== '' && submission(false, _.cloneDeep({type : 'targets', id : k}))
         })
     }

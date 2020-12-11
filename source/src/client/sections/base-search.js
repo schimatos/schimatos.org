@@ -152,7 +152,6 @@ export default ({ content, initialState, reducer, selectVariable, standardQuerie
         // console.log('labels', labels, hash(_.difference(_.cloneDeep(o), _.cloneDeep(_.keys(labels)))))
 
         const opts2 = () => opts().map(x => {
-            console.log(x)
             return ({key : x.key, value : x.key, text : (labels[x.key] || /[a-z0-9]*$/i.exec(x.text)[0]) 
             
         // + (labels[1][x.key]?.['http://www.w3.org/ns/shacl#property'] ? 

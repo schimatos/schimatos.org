@@ -65,6 +65,9 @@ export default async () => {
             const sendQuery = async (graph, query) => {
                     //console.log('query sent', query)
                     try {
+                        if (query.includes('{ ?p ?o}')) {
+                            throw new Error('Malformed Query');
+                        };
                         const auth = {"Authorization" : "Basic " + new Buffer(`${graph['authentication']['username']}:${graph['authentication']['password']}`).toString("base64")}
                         const isauth = graph['authentication']['username'] + graph['authentication']['password'] !== ''
                         const response = await request(`${graph.sparql_endpoint}/${graph.endpoint_extension}`, {
@@ -73,7 +76,7 @@ export default async () => {
                                 "Content-Type" : "application/x-www-form-urlencoded"
                                 //"timeout" : timeout
                             },
-                            data : {query},
+                            data : {query, key : "98HPG9NiuUIBOIUWBERFP98p98hP98HP9BUI8O7G7TVY6V7O8gp89hp98HBUIIBJHVHJVYUV78GP8H989pgPUIILUBo7B8O7B7P8BOV5FW3ceC4CAgyOUGUHBJHVYPV989V6LVVKV8VO8I6RFTYFC" },
                             method : graph.request_type
                         })
                         if (response.statusCode !== 200) {

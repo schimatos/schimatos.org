@@ -3,14 +3,14 @@ import _ from 'underscore'
 import {nextKey, keepCloning, filterDict, toEntries} from '../../../../utils'
 
 export default ({state, newProperties, id}) => {
-    console.log('new properties called', state, newProperties, id)
+    // console.log('new properties called', state, newProperties, id)
     // //console.log(state, keepCloning(newProperties), id)
 
 
     const addProperties = (state, properties, id_no, idsCreated) => {
 
         
-        console.log('state at start', keepCloning(state), keepCloning(properties))
+        // console.log('state at start', keepCloning(state), keepCloning(properties))
 
 
 
@@ -78,7 +78,7 @@ export default ({state, newProperties, id}) => {
                 const k = ps[existing].property
                 const existingProperty = o[k]
                 const {minCount, maxCount, path, pathType, message, severity} = existingProperty
-                console.log(minCount, min, existingProperty)
+                // console.log(minCount, min, existingProperty)
                 const newMin = Math.max(min, !isNaN(minCount) ? minCount : 1)
                 const newMax = (maxCount && x.maxCount) ? Math.min(maxCount, x.maxCount) : (maxCount ? maxCount : x.maxCount)
                 const oldSev = severityMap(severity)
@@ -171,7 +171,7 @@ export default ({state, newProperties, id}) => {
 
     const [newState, allIds] = keepCloning(addProperties(state, keepCloning((newProperties[0] && newProperties[0].constraints) || newProperties.constraints || []), id, []))
 
-    console.log(keepCloning(newState), keepCloning(allIds))
+    // console.log(keepCloning(newState), keepCloning(allIds))
 
 
     newState.groups = keepCloning({...state.groups, ...newProperties.groups})
@@ -180,6 +180,6 @@ export default ({state, newProperties, id}) => {
 
    //console.log(newState, keepCloning(newState))
 
-    console.log(keepCloning(newState))
+    // console.log(keepCloning(newState))
     return {newState : keepCloning(newState), ids : allIds}
 }

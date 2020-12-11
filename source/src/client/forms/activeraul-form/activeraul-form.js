@@ -91,12 +91,12 @@ export default () => {
         const toGet = [Object.values(propertyList).map(target => target.in|| []).flat(), Object.values(actualTargets).map(target => target.value).filter(x => x!= '')].flat()
         const optionsToGet = Object.values(targets.property).map(x => x.options).flat().map(x => x.value).filter(x => x.includes('http://'))
         // console.log('labvels to get', toGet)
-        console.log(toGet, targets, state)
-        console.log(optionsToGet)
+        // console.log(toGet, targets, state)
+        // console.log(optionsToGet)
         getLabels([toGet, optionsToGet].flat())
     }, hash([actualTargets, propertyList, Object.values(targets.property)]))
 
-    console.log('targets', targets, state.labels)
+    // console.log('targets', targets, state.labels)
 
     const [{startPoint},] = useContext(LayoutContext)
     const {displayIRI, displayIRIMulti, makeIRI} = Conversions(0)
