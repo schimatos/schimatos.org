@@ -45,7 +45,7 @@
     "react-hook-form": "^4.10.2",
     "react-journey": "^1.1.6",
     "react-joyride": "^2.2.1",
-    "react-native": "^0.61.5",
+    "react-native": "^0.62.3",
     "react-native-copilot": "^2.4.8",
     "react-test-render": "^1.1.2",
     "react-use": "^13.27.1",
